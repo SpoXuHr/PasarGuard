@@ -1,19 +1,70 @@
-# PasarGuard — fresh Railway deployment
+# PasarGuard
 
-This repository contains the application source and assets used for the independent Netherlands panel. The current panel and its persistent data are not part of this repository. `native-fresh.db` is an empty schema template; it contains no administrators, users, settings, JWTs, managed bindings, or actions. A fresh deployment creates its own administrator and service state on first boot.
+Source and assets for the independent PasarGuard panel, with a clean database template and a Linux Docker installation. No current users, credentials, traffic, VPN private keys, or production databases are included. First boot on a **new** volume creates a new administrator and initializes the panel's services and groups.
 
-## Railway deployment
+## Quick installation on a Linux VPS
 
-1. Deploy this repository as a Dockerfile service in Railway. The image downloads the VPN-UI v1.9.4 binary during build, verifies its SHA-256, and installs the Python dependencies in `requirements-freeze.txt`. Network access to the upstream dependency sources is needed at build time.
-2. Attach a **new** persistent volume at `/persistent`. Never attach the existing panel's volume. Select the desired service and volume region; a country-specific address or a dedicated/fixed egress IP is not guaranteed.
-3. Set these service variables:
-   - `ADMIN_PASSWORD`: choose a strong, private password. The initial native administrator username is `GUCCi`.
-   - `PORT` and `SERVER_PORT`: set both to `20004`.
-   - `PYTHONDONTWRITEBYTECODE`: `1`.
-   - `PUBLIC_TLS`: `0`.
-4. Create a Railway public service domain targeting port `20004` and one Railway TCP Proxy targeting port `20004`. Set `PG_MANAGED_SUB_ORIGIN` to `https://<your-service-domain>`, `PANEL_HOST` to the proxy's assigned domain, and `RAILWAY_ADVERTISED_PORT` to its assigned external port. If necessary, redeploy this new service after setting variables. The Railway-provided `RAILWAY_PUBLIC_DOMAIN` is supplied automatically when a service domain is configured.
-5. Open `https://<your-service-domain>/TeamGuccI/pasarguard/` and sign in. On first boot the new volume is initialized and the managed services/groups are seeded. Check the startup logs and actual generated links before use.
+Requirements:
 
-**Important limitations:** Railway's HTTPS edge does not carry raw OpenVPN TCP. OpenVPN TCP uses the TCP Proxy; OpenVPN over the HTTPS domain and port 443 requires a separate compatible client-side WebSocket helper. Railway public networking does not provide public UDP forwarding, so UDP-only protocols are not usable through the TCP Proxy. The legacy `setup.sh` is not the Railway deployment procedure above.
+- Linux **x86_64 / amd64**, Docker Engine and the Docker Compose v2 plugin, plus `git` and `curl`. The bundled VPN-UI and helper binaries are amd64; ARM and other operating systems are not supported by this release.
+- Internet access to Docker Hub, GitHub and Python package sources during build/startup. Allow at least 1 GB RAM (2 GB recommended), and several GB of free disk for Docker layers and persistent data.
+- An externally reachable IPv4 address; allow TCP port 20004 and, for UDP protocols, UDP port 20004 in both the server firewall and hosting-provider firewall. The port must not already be in use. Your provider must allow inbound TCP/UDP; this is not guaranteed on all platforms.
+- This is a **private GitHub repository**. Authenticate your Git client to GitHub before cloning. Do not paste a token into the clone URL, scripts, shell history, or this repository.
 
-This export is source plus clean initialization, not a snapshot of the active panel's databases, passwords, users, subscription credentials, traffic or certificate/private keys. Existing servers are unaffected. A build from GitHub and full end-to-end operation on a newly deployed instance should be verified separately; hosted dependency versions, Railway networking, and regions can change.
+After authenticating and cloning:
+
+```sh
+git clone https://github.com/SpoXuHr/PasarGuard.git
+cd PasarGuard
+sudo ./install.sh
+```
+
+The installer detects the public IPv4 address, generates a unique random administrator password, stores configuration in a private `.env` file, builds the image, starts Docker Compose, and waits for the native API to respond. It prints the dashboard URL. Username: `GUCCi`. To see the generated password on a root-run installation:
+
+```sh
+sudo grep '^ADMIN_PASSWORD=' .env
+```
+
+Keep `.env` private. It is ignored by Git and excluded from the Docker build context. A repeated installation preserves the existing `.env` and Docker volume; it does **not** reset users or traffic. Deleting the volume destroys the panel's users, configuration, keys and traffic: do not run `docker compose down -v` unless you intend to permanently erase that data. Back up the volume separately before upgrades.
+
+If automatic IP detection is wrong (for example, NAT or differing ingress and egress IPs), or if you want a domain to be used as the advertised address, run **on the first install**, using your own values:
+
+```sh
+sudo PASARGUARD_HOST=YOUR_PUBLIC_IP_OR_DOMAIN PASARGUARD_PORT=20004 ./install.sh
+```
+
+`PASARGUARD_HOST` accepts a hostname or IPv4 address, not a URL. Values are captured when `.env` is first created; existing `.env` is never overwritten. The host must resolve/reach this server. The port must be free. Docker Compose publishes that same port for TCP and UDP. For an existing installation, update the configuration carefully and rebuild/recreate without deleting the volume. Test all links after any network change.
+
+### TLS and security
+
+The default VPS panel uses a **self-signed certificate**, not a publicly trusted certificate. Browsers and subscription clients will show warnings or reject it. Verify its SHA-256 fingerprint through a trusted administrative channel; accepting an unverified certificate is vulnerable to impersonation. For production, configure a trusted HTTPS reverse proxy using a domain and valid certificate, with access restricted appropriately. Do not assume that a generic HTTPS proxy automatically transports raw OpenVPN or other TCP protocols.
+
+For example, retrieve the certificate fingerprint locally on the server, after startup:
+
+```sh
+sudo docker compose exec pasarguard node -e "console.log(new (require('crypto').X509Certificate)(require('fs').readFileSync('/persistent/vpn-data/edge-tls/edge.crt')).fingerprint256)"
+```
+
+The address of the server and whether the public port is filtered are determined by the host/network. The generated VLESS/VMess/Trojan TCP and Shadowsocks links were tested locally on Docker; WebSocket links over a trusted port 443 are not automatically supplied in the generic VPS mode. A separately configured domain and HTTPS edge are needed for that deployment pattern.
+
+### Lifecycle and limitations
+
+```sh
+sudo docker compose ps
+sudo docker compose logs --tail=100 -f
+sudo docker compose restart
+sudo docker compose stop
+sudo docker compose up -d
+```
+
+A Docker volume persists the database, VPN state and certificates across restarts. Docker's `unless-stopped` policy restarts the service after daemon/host restarts unless intentionally stopped. It is not a backup.
+
+An isolated Docker test built the image, initialized a fresh panel with zero users, logged in successfully, passed traffic over Shadowsocks/VLESS/Trojan/VMess TCP, and retained a test user across a container restart. OpenVPN TCP and UDP passed certificate verification and authentication up to `PUSH_REPLY`; full TUN/data forwarding and individual WireGuard, AmneziaWG, Hysteria 2, and Telegram clients were **not** verified. On initial startup the UDP mux may log a warning when profiles are empty or incomplete. Check actual service logs and test the protocols you need; opening a UDP port alone does not establish that all UDP protocols work.
+
+## Existing Railway deployment
+
+For Railway, deploy the Dockerfile service and attach a **new** volume at `/persistent`. Never reattach an existing panel's volume. Set `ADMIN_PASSWORD`, `PORT`, `SERVER_PORT`, `PYTHONDONTWRITEBYTECODE=1` and `PUBLIC_TLS=0`. Create a Railway service domain and TCP Proxy targeting the application port. Set `PG_MANAGED_SUB_ORIGIN` to the service HTTPS origin, `PANEL_HOST` to the TCP proxy domain, and `RAILWAY_ADVERTISED_PORT` to its external port. Railway supplies `RAILWAY_VOLUME_MOUNT_PATH` and `RAILWAY_PUBLIC_DOMAIN`. See the platform's networking and volume requirements before deploying.
+
+Railway's HTTPS edge does not carry raw OpenVPN TCP; use its TCP Proxy, or a separate WebSocket helper on the client. Railway does not provide public UDP forwarding through the TCP proxy. The legacy `setup.sh` is not the deployment method described above.
+
+The base image downloads VPN-UI v1.9.4 at build time and verifies its pinned SHA-256. Other pinned dependencies are installed at build time; ongoing availability and every future platform or network cannot be guaranteed.

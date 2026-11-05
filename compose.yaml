@@ -1,0 +1,24 @@
+services:
+  pasarguard:
+    build: .
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Run ./install.sh first}
+      SERVER_IP: ${SERVER_IP:?Run ./install.sh first}
+      PANEL_HOST: ${SERVER_IP:?Run ./install.sh first}
+      SERVER_PORT: ${VPN_PORT:-20004}
+      PORT: ${VPN_PORT:-20004}
+      RAILWAY_ADVERTISED_PORT: ${VPN_PORT:-20004}
+      RAILWAY_VOLUME_MOUNT_PATH: /persistent
+      PG_MANAGED_SUB_ORIGIN: https://${SERVER_IP:?Run ./install.sh first}:${VPN_PORT:-20004}
+      PUBLIC_TLS: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - pasarguard-data:/persistent
+    ports:
+      - "${VPN_PORT:-20004}:${VPN_PORT:-20004}/tcp"
+      - "${VPN_PORT:-20004}:${VPN_PORT:-20004}/udp"
+
+volumes:
+  pasarguard-data:
