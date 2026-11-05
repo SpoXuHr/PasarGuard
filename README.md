@@ -9,9 +9,9 @@ Requirements:
 - Linux **x86_64 / amd64**, Docker Engine and the Docker Compose v2 plugin, plus `git` and `curl`. The bundled VPN-UI and helper binaries are amd64; ARM and other operating systems are not supported by this release.
 - Internet access to Docker Hub, GitHub and Python package sources during build/startup. Allow at least 1 GB RAM (2 GB recommended), and several GB of free disk for Docker layers and persistent data.
 - An externally reachable IPv4 address; allow TCP port 20004 and, for UDP protocols, UDP port 20004 in both the server firewall and hosting-provider firewall. The port must not already be in use. Your provider must allow inbound TCP/UDP; this is not guaranteed on all platforms.
-- This is a **private GitHub repository**. Authenticate your Git client to GitHub before cloning. Do not paste a token into the clone URL, scripts, shell history, or this repository.
+- This repository is **public** and can be cloned without GitHub authentication. Never add passwords, tokens, private keys or panel databases to the repository.
 
-After authenticating and cloning, choose **one** access mode:
+Clone the repository and choose **one** access mode:
 
 ```sh
 git clone https://github.com/SpoXuHr/PasarGuard.git
