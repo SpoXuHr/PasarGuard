@@ -1,0 +1,1 @@
+import{r as e}from"./rolldown-runtime-hePW80VL.js";import{t}from"./react-CwJFpaho.js";import{t as n}from"./use-command-palette-store-DD0bg85G.js";var r=e(t());function i(e,t){let i=n(e=>e.createTarget),a=n(e=>e.consumeCreate);(0,r.useEffect)(()=>{i===e&&(t(),a())},[a,i,t,e])}export{i as t};

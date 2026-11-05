@@ -1,0 +1,46 @@
+#!/bin/sh
+set -eu
+# never write 190 MB core dumps onto the 716 MB volume
+ulimit -c 0 2>/dev/null || true
+PG=/home/container/pasarguard-native
+cd "$PG"
+export PYTHONPATH="$PG/pylibs:$PG"
+export PYTHONDONTWRITEBYTECODE=1
+export PG_MANAGED_ENABLED=1
+export PG_MANAGED_AUTH_FILE=/persistent/state.json
+export PG_MANAGED_RUNTIME_URL=http://127.0.0.1:${SERVER_PORT:-20250}/TeamGuccI
+# Public origin used for the subscription links the panel shows to users.
+# Read from the address the launcher detected on this boot, so links never
+# point at a previous server. Override with PG_MANAGED_SUB_ORIGIN if needed.
+PG_SUB_HOST=$(cat /home/container/vpn/data/public-host.txt 2>/dev/null | tr -d '[:space:]' || true)
+if [ -z "${PG_SUB_HOST:-}" ]; then PG_SUB_HOST="${SERVER_IP:-127.0.0.1}"; fi
+export PG_MANAGED_SUB_ORIGIN="${PG_MANAGED_SUB_ORIGIN:-http://${PG_SUB_HOST}:${SERVER_PORT:-20250}}"
+export SQLALCHEMY_DATABASE_URL=sqlite+aiosqlite:////home/container/pasarguard-native/data/pasarguard.db
+export DASHBOARD_PATH=/TeamGuccI/pasarguard/
+export VITE_BASE_API=/TeamGuccI/pg/
+export JOB_REMOVE_OLD_INBOUNDS_INTERVAL=86400
+# [kb] Stability on the 308 MB plan: PasarGuard has no real nodes in this fork
+# (the managed VPN-UI worker is external), so node bookkeeping runs rarely and
+# the managed 5s usage loop remains the live source for panel numbers/quota.
+export PYTHONMALLOC=malloc
+export DISABLE_RECORDING_NODE_USAGE=true
+export JOB_CORE_HEALTH_CHECK_INTERVAL=300
+export JOB_RECORD_NODE_USAGES_INTERVAL=900
+export JOB_RECORD_USER_USAGES_INTERVAL=300
+export JOB_REVIEW_USERS_INTERVAL=300
+export JOB_REVIEW_ADMIN_LIMITS_INTERVAL=30
+export JOB_GATHER_NODES_STATS_INTERVAL=900
+export JOB_RESET_NODE_USAGE_INTERVAL=900
+export JOB_CHECK_NODE_LIMITS_INTERVAL=600
+export JOB_SEND_NOTIFICATIONS_INTERVAL=300
+export UVICORN_WORKERS=1
+export WEB_CONCURRENCY=1
+export UV_THREADPOOL_SIZE=1
+export MALLOC_ARENA_MAX=1
+export MALLOC_TRIM_THRESHOLD_=32768
+export MALLOC_MMAP_THRESHOLD_=65536
+export MALLOC_TOP_PAD_=65536
+if test -f "$PG/data/runtime-writes.enabled"; then export PG_MANAGED_RUNTIME_WRITES=1; else export PG_MANAGED_RUNTIME_WRITES=0; fi
+if test -f "$PG/data/canary-prefix"; then export PG_MANAGED_CANARY_PREFIX=$(cat "$PG/data/canary-prefix"); fi
+/home/container/.venv/bin/python /home/container/upgrade-native.py
+exec "/home/container/.venv/bin/python" -OO -m uvicorn app:create_app --factory --host 127.0.0.1 --port 18081 --workers 1 --loop asyncio --http h11 --no-access-log --timeout-graceful-shutdown 10

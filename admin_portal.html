@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="fa" dir="rtl" data-pg-portal="1">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#04140e" />
+<meta name="robots" content="noindex, nofollow" />
+<title>پنل مدیریت</title>
+<style>
+  :root{
+    --bg-0:#04120c; --bg-1:#062017; --bg-2:#08301f;
+    --card:rgba(255,255,255,.055); --card-2:rgba(255,255,255,.085);
+    --stroke:rgba(134,239,172,.16); --stroke-2:rgba(134,239,172,.3);
+    --txt:#eafff3; --muted:#9dbdac; --ok:#34d399; --ok-2:#22c55e; --lime:#a3e635;
+    --warn:#fbbf24; --bad:#fb7185; --shadow:0 24px 60px -24px rgba(0,0,0,.85);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; color:var(--txt); font-family:"Vazirmatn",system-ui,"Segoe UI",Tahoma,sans-serif;
+    background:
+      radial-gradient(1200px 700px at 82% -10%, #0b4a2c 0%, transparent 55%),
+      radial-gradient(900px 600px at 8% 8%, #08543a 0%, transparent 52%),
+      radial-gradient(700px 500px at 50% 115%, #0a3d24 0%, transparent 60%),
+      linear-gradient(180deg,var(--bg-0),var(--bg-1) 45%,var(--bg-0));
+    min-height:100dvh; overflow-x:hidden; -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:""; position:fixed; inset:-20%; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(52,211,153,.16), transparent 42%),
+      radial-gradient(circle at 78% 22%, rgba(163,230,53,.12), transparent 40%),
+      radial-gradient(circle at 60% 82%, rgba(16,185,129,.14), transparent 45%);
+    filter:blur(30px); animation:aurora 22s ease-in-out infinite alternate;
+  }
+  body::after{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.35;
+    background-image:linear-gradient(rgba(134,239,172,.055) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(134,239,172,.055) 1px,transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(circle at 50% 30%, #000 10%, transparent 78%);
+    -webkit-mask-image:radial-gradient(circle at 50% 30%, #000 10%, transparent 78%);
+  }
+  @keyframes aurora{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-2%,1.5%,0) scale(1.06)}100%{transform:translate3d(2%,-1%,0) scale(1.02)}}
+  .wrap{position:relative; z-index:1; max-width:1120px; margin:0 auto; padding:22px 16px 46px}
+
+  /* ---------- top bar ---------- */
+  .top{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px}
+  .brand{display:flex; align-items:center; gap:11px}
+  .mark{
+    width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+    background:linear-gradient(145deg,rgba(52,211,153,.28),rgba(163,230,53,.14));
+    border:1px solid var(--stroke-2); box-shadow:0 8px 30px -12px rgba(52,211,153,.7), inset 0 1px 0 rgba(255,255,255,.2);
+  }
+  .mark svg{width:22px;height:22px;color:#d9ffe9}
+  .brand h1{margin:0;font-size:16px;font-weight:800;letter-spacing:.2px}
+  .brand span{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+  .pill{
+    display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;
+    font-size:12px;font-weight:700;border:1px solid var(--stroke);background:var(--card);backdrop-filter:blur(12px);
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(52,211,153,.16)}
+  .dot.off{background:var(--bad);box-shadow:0 0 0 4px rgba(251,113,133,.14)}
+  .dot.warn{background:var(--warn);box-shadow:0 0 0 4px rgba(251,191,36,.16)}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative; overflow:hidden; border-radius:26px; padding:26px 22px;
+    background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.035));
+    border:1px solid var(--stroke); box-shadow:var(--shadow); backdrop-filter:blur(20px);
+  }
+  .hero::before{
+    content:"";position:absolute;inset:-60% -20% auto auto;width:420px;height:420px;border-radius:50%;
+    background:radial-gradient(circle,rgba(52,211,153,.35),transparent 62%);filter:blur(18px);
+  }
+  .hero-row{position:relative;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .avatar{
+    width:64px;height:64px;border-radius:22px;display:grid;place-items:center;font-size:26px;font-weight:900;
+    color:#052e1b;background:linear-gradient(150deg,#a3e635,#34d399 60%,#22c55e);
+    box-shadow:0 14px 34px -14px rgba(52,211,153,.9), inset 0 1px 0 rgba(255,255,255,.55);
+  }
+  .who h2{margin:0;font-size:22px;font-weight:900;letter-spacing:.2px}
+  .who .sub{color:var(--muted);font-size:12.5px;margin-top:5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .tag{padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700;border:1px solid var(--stroke);background:rgba(255,255,255,.05)}
+  .tag.gold{color:#fde68a;border-color:rgba(253,230,138,.35);background:rgba(253,230,138,.1)}
+  .hero-actions{margin-inline-start:auto;display:flex;gap:9px;flex-wrap:wrap}
+  .btn{
+    appearance:none;border:1px solid var(--stroke);background:var(--card-2);color:var(--txt);
+    padding:11px 16px;border-radius:14px;font:inherit;font-size:13px;font-weight:800;cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px;transition:transform .16s ease,box-shadow .2s ease,background .2s ease;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 16px 30px -18px rgba(0,0,0,.9);background:rgba(255,255,255,.13)}
+  .btn.primary{
+    color:#042114;border:none;background:linear-gradient(140deg,#a3e635,#34d399 55%,#10b981);
+    box-shadow:0 18px 40px -18px rgba(52,211,153,.95), inset 0 1px 0 rgba(255,255,255,.5);
+  }
+  .btn:active{transform:translateY(0) scale(.985)}
+  .passbox{
+    position:relative;margin-top:20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    padding:12px 14px;border-radius:16px;border:1px dashed var(--stroke-2);background:rgba(4,32,22,.5);
+  }
+  .passbox code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:#c9ffe2;letter-spacing:.4px;direction:ltr}
+  .passbox .lbl{font-size:12px;color:var(--muted);font-weight:700}
+
+  /* ---------- kpi ---------- */
+  .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+  @media(min-width:760px){.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
+  .kpi{
+    position:relative;overflow:hidden;border-radius:20px;padding:16px 16px 14px;
+    background:var(--card);border:1px solid var(--stroke);backdrop-filter:blur(16px);
+    animation:rise .6s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .kpi:nth-child(2){animation-delay:.06s}.kpi:nth-child(3){animation-delay:.12s}.kpi:nth-child(4){animation-delay:.18s}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .kpi .k{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;font-weight:700}
+  .kpi .k svg{width:15px;height:15px;opacity:.9}
+  .kpi .v{margin-top:9px;font-size:26px;font-weight:900;letter-spacing:.3px;display:flex;align-items:baseline;gap:6px}
+  .kpi .v small{font-size:12px;font-weight:700;color:var(--muted)}
+  .kpi .bar{margin-top:11px;height:7px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
+  .kpi .bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#34d399,#a3e635);transition:width .9s cubic-bezier(.2,.8,.2,1)}
+  .kpi .hint{margin-top:8px;font-size:11.5px;color:var(--muted)}
+  .kpi::after{content:"";position:absolute;inset:auto -30% -60% auto;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(52,211,153,.18),transparent 65%)}
+
+  /* ---------- panels ---------- */
+  .grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:16px}
+  @media(min-width:960px){.grid{grid-template-columns:1.25fr .95fr}}
+  .card{border-radius:22px;padding:18px;background:var(--card);border:1px solid var(--stroke);backdrop-filter:blur(16px);box-shadow:var(--shadow)}
+  .card h3{margin:0 0 14px;font-size:14px;font-weight:900;display:flex;align-items:center;gap:8px}
+  .card h3 .sp{margin-inline-start:auto;font-size:11.5px;font-weight:700;color:var(--muted)}
+  .chart{width:100%;height:190px;display:block;overflow:visible}
+  .chart .area{fill:url(#g1);opacity:.9}
+  .chart .line{fill:none;stroke:#5eead4;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;filter:drop-shadow(0 6px 14px rgba(94,234,212,.5))}
+  .chart .axis{stroke:rgba(255,255,255,.13);stroke-width:1}
+  .chart text{fill:#8fb3a3;font-size:9.5px;font-family:inherit}
+  .seg{display:flex;gap:6px;background:rgba(255,255,255,.06);padding:4px;border-radius:12px;border:1px solid var(--stroke)}
+  .seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:11.5px;font-weight:800;padding:6px 10px;border-radius:9px;cursor:pointer}
+  .seg button.on{background:rgba(52,211,153,.22);color:#d7ffe9}
+
+  .users{display:flex;flex-direction:column;gap:9px;max-height:420px;overflow:auto;padding-inline-end:2px}
+  .users::-webkit-scrollbar{width:7px}
+  .users::-webkit-scrollbar-thumb{background:rgba(134,239,172,.25);border-radius:99px}
+  .u{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:15px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.035)}
+  .u .nm{font-weight:800;font-size:13px;direction:ltr;text-align:right}
+  .u .meta{font-size:11px;color:var(--muted);margin-top:3px}
+  .u .grow{flex:1;min-width:0}
+  .u .ick{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.07);border:1px solid var(--stroke);cursor:pointer;color:#c9ffe2}
+  .u .ick:hover{background:rgba(52,211,153,.22)}
+  .empty{color:var(--muted);font-size:12.5px;text-align:center;padding:22px 8px}
+  .skeleton{height:56px;border-radius:15px;background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.11),rgba(255,255,255,.05));background-size:200% 100%;animation:sh 1.2s infinite}
+  @keyframes sh{to{background-position:-200% 0}}
+  .foot{margin-top:22px;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:11.5px}
+  .toast{
+    position:fixed;inset-inline:0;bottom:22px;margin:auto;width:max-content;max-width:86vw;z-index:9;
+    padding:11px 18px;border-radius:14px;font-size:12.5px;font-weight:800;color:#042114;
+    background:linear-gradient(140deg,#a3e635,#34d399);box-shadow:0 18px 40px -18px rgba(52,211,153,.9);
+    opacity:0;transform:translateY(14px);transition:.25s ease;pointer-events:none;
+  }
+  .toast.show{opacity:1;transform:none}
+
+  /* ---------- mode switch (مدل: پاسارگارد / مدل: کنسول) ---------- */
+  .modes{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center}
+  .modes .cap{font-size:11.5px;color:var(--muted);font-weight:800;margin-inline-end:2px}
+  .mode{
+    display:inline-flex;align-items:center;gap:9px;padding:10px 14px;border-radius:14px;cursor:pointer;
+    background:var(--card);border:1px solid var(--stroke);color:var(--muted);font:inherit;font-size:12.5px;font-weight:800;
+    transition:transform .16s ease,color .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease;
+    backdrop-filter:blur(12px);
+  }
+  .mode:hover{color:var(--txt);border-color:var(--stroke-2);transform:translateY(-1px)}
+  .mode .box{width:17px;height:17px;border-radius:6px;border:1.6px solid var(--stroke-2);display:grid;place-items:center;transition:.18s}
+  .mode .box svg{width:11px;height:11px;opacity:0;transform:scale(.55);transition:.18s;color:#042114}
+  .mode.on{color:#eafff3;border-color:rgba(52,211,153,.5);background:linear-gradient(140deg,rgba(52,211,153,.26),rgba(163,230,53,.12));box-shadow:0 16px 32px -22px rgba(52,211,153,.95)}
+  .mode.on .box{background:linear-gradient(140deg,#a3e635,#34d399);border-color:transparent}
+  .mode.on .box svg{opacity:1;transform:none}
+
+  /* ---------- info box (مشخصات پنل) ---------- */
+  #infoCard{margin-top:16px}
+  .kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  @media(min-width:820px){.kv{grid-template-columns:repeat(4,minmax(0,1fr))}}
+  .kv .item{padding:12px 13px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);min-width:0;position:relative;overflow:hidden}
+  .kv .item::after{content:"";position:absolute;inset:auto -30% -70% auto;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(52,211,153,.14),transparent 65%)}
+  .kv .item .kk{font-size:11px;color:var(--muted);font-weight:800;display:flex;align-items:center;gap:6px}
+  .kv .item .vv{margin-top:8px;font-size:15px;font-weight:900;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;text-align:right;position:relative;z-index:1}
+  .kv .item .vv.fa{direction:rtl;font-size:13px;font-family:inherit}
+  .kv .item .vv.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;color:#c9ffe2}
+  .kv .item a{color:#8affc4;text-decoration:none;direction:ltr;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
+  .kv .item .mini{margin-top:6px;font-size:10.5px;color:var(--muted);font-weight:700}
+  .kv .item .row{display:flex;align-items:center;gap:6px;margin-top:8px}
+  .eye{border:0;background:rgba(255,255,255,.07);border:1px solid var(--stroke);color:#c9ffe2;cursor:pointer;border-radius:9px;width:26px;height:26px;display:grid;place-items:center;padding:0}
+  .eye:hover{background:rgba(52,211,153,.22)}
+
+  /* ---------- console mode ---------- */
+  #consoleView{display:none;margin-top:16px}
+  body[data-mode="console"] #consoleView{display:block}
+  body[data-mode="console"] .kpis,body[data-mode="console"] .grid,body[data-mode="console"] #infoCard{display:none}
+  .term{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.8;
+    background:radial-gradient(130% 130% at 0% 0%,rgba(6,46,30,.92),rgba(2,16,11,.94));
+    border:1px solid rgba(52,211,153,.18);border-radius:16px;padding:14px 16px;min-height:300px;max-height:470px;overflow:auto;
+    direction:ltr;text-align:left;color:#b6ffd6;white-space:pre-wrap;word-break:break-word;
+    box-shadow:inset 0 0 70px rgba(52,211,153,.07);
+  }
+  .term .cmd{color:#a3e635}.term .dim{color:#6f9d86}.term .err{color:#fb7185}
+  .term .ok{color:#5eead4}.term .hl{color:#eafff3;font-weight:700}
+  .term .ln{display:block}
+  .prompt{display:flex;align-items:center;gap:8px;margin-top:10px;padding:10px 12px;border-radius:13px;border:1px solid var(--stroke);background:rgba(4,32,22,.6);direction:ltr}
+  .prompt span{color:#a3e635;font-family:ui-monospace,monospace;font-size:12.5px;font-weight:700}
+  .prompt input{flex:1;background:transparent;border:0;outline:0;color:#d7ffe9;font:inherit;font-family:ui-monospace,monospace;font-size:12.5px;min-width:0}
+  .prompt input::placeholder{color:#4f7a66}
+  .caret{display:inline-block;width:8px;height:13px;background:#a3e635;animation:blink 1.05s steps(1) infinite;vertical-align:-2px}
+  @keyframes blink{50%{opacity:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3l7 3v5.5c0 4.2-2.9 8-7 9.5-4.1-1.5-7-5.3-7-9.5V6l7-3z"/><path d="M9.2 12.2l2 2 3.6-3.9"/>
+        </svg>
+      </div>
+      <div>
+        <h1>پنل مدیریت اختصاصی</h1>
+        <span>PasarGuard · دسترسی امن با آدرس شخصی</span>
+      </div>
+    </div>
+    <div class="pill" id="statusPill"><span class="dot" id="statusDot"></span><span id="statusText">در حال بارگذاری…</span></div>
+  </div>
+
+  <section class="hero">
+    <div class="hero-row">
+      <div class="avatar" id="avatar">M</div>
+      <div class="who">
+        <h2 id="username">__USER__</h2>
+        <div class="sub">
+          <span class="tag gold" id="roleTag">مدیر</span>
+          <span class="tag" id="usersTag">— کاربر</span>
+          <span class="tag" id="lastTag">—</span>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn primary" id="enterPanel">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h13"/><path d="M12 5l7 7-7 7"/></svg>
+          ورود به پنل کامل
+        </button>
+        <button class="btn" id="refresh">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
+          تازه‌سازی
+        </button>
+      </div>
+    </div>
+    <div class="passbox">
+      <span class="lbl">آدرس شخصی این پنل</span>
+      <code id="panelUrl">__PANELURL__</code>
+      <button class="btn" id="copyPanel" style="padding:7px 12px;font-size:12px">کپی لینک</button>
+      <span class="lbl" style="margin-inline-start:auto">این آدرس مخصوص خود شماست؛ آن را در اختیار کسی نگذارید.</span>
+    </div>
+  </section>
+
+
+  <div class="modes" id="modes">
+    <span class="cap">مدل نمایش:</span>
+    <button class="mode on" type="button" data-mode="pg">
+      <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
+      مدل: پاسارگارد
+    </button>
+    <button class="mode" type="button" data-mode="console">
+      <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
+      مدل: کنسول
+    </button>
+  </div>
+
+  <section class="kpis">
+    <div class="kpi">
+      <div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/></svg>کاربران</div>
+      <div class="v"><span id="kUsers">—</span><small id="kOnline">آنلاین ۰</small></div>
+      <div class="hint" id="kActive">فعال: —</div>
+    </div>
+    <div class="kpi">
+      <div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17l5-5 4 3 5-7 4 4"/></svg>مصرف کل</div>
+      <div class="v"><span id="kUsed">—</span><small>GB</small></div>
+      <div class="bar"><i id="kUsedBar"></i></div>
+      <div class="hint" id="kUsedHint">از سقف —</div>
+    </div>
+    <div class="kpi">
+      <div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20"/><path d="M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>سقف حجم</div>
+      <div class="v"><span id="kLimit">—</span><small id="kLimitUnit">GB</small></div>
+      <div class="hint" id="kRemain">باقی‌مانده: —</div>
+    </div>
+    <div class="kpi">
+      <div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>وضعیت</div>
+      <div class="v" id="kStatus" style="font-size:20px">—</div>
+      <div class="hint" id="kExpire">—</div>
+    </div>
+  </section>
+
+
+  <section class="card" id="infoCard">
+    <h3>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+      مشخصات پنل
+      <span class="sp" id="infoHint">به‌روزرسانی خودکار هر ۲۰ ثانیه</span>
+    </h3>
+    <div class="kv">
+      <div class="item">
+        <div class="kk">حجم تعیین‌شدهٔ پنل</div>
+        <div class="vv" id="iLimit">—</div>
+        <div class="mini" id="iLimitMini">سقف ترافیک</div>
+      </div>
+      <div class="item">
+        <div class="kk">حجم مصرفی</div>
+        <div class="vv" id="iUsed">—</div>
+        <div class="mini" id="iUsedMini">از ابتدای ساخت</div>
+      </div>
+      <div class="item">
+        <div class="kk">تاریخ تقسیم <span style="opacity:.7">(کسری)</span></div>
+        <div class="vv" id="iSplit">—</div>
+        <div class="mini" id="iSplitMini">باقی‌مانده با کسری</div>
+      </div>
+      <div class="item">
+        <div class="kk">تاریخ انقضا</div>
+        <div class="vv" id="iExpire">—</div>
+        <div class="mini" id="iExpireMini">وضعیت زمانی پنل</div>
+      </div>
+      <div class="item">
+        <div class="kk">لینک تلگرام</div>
+        <div class="vv fa" id="iTgLink">—</div>
+        <div class="mini">پشتیبانی و ارتباط</div>
+      </div>
+      <div class="item">
+        <div class="kk">نام کاربری تلگرام</div>
+        <div class="vv fa" id="iTgUser">—</div>
+        <div class="mini">شناسهٔ تلگرام مدیر</div>
+      </div>
+      <div class="item">
+        <div class="kk">رمز ورود پنل</div>
+        <div class="row">
+          <div class="vv mono" id="iPass" style="margin:0;flex:1">••••••••••••</div>
+          <button class="eye" id="eyePass" type="button" title="نمایش رمز">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg>
+          </button>
+          <button class="eye" id="copyPass" type="button" title="کپی رمز">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+          </button>
+        </div>
+        <div class="mini">این رمز مخصوص آدرس شخصی شماست</div>
+      </div>
+      <div class="item">
+        <div class="kk">آدرس پنل کامل</div>
+        <div class="vv fa" style="font-size:11.5px"><a id="iPanelRoot" href="#">—</a></div>
+        <div class="mini">ورود خودکار بدون رمز</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <h3>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+        نمودار مصرف
+        <span class="sp">
+          <span class="seg">
+            <button data-period="hour" type="button">ساعتی</button>
+            <button data-period="day" class="on" type="button">روزانه</button>
+          </span>
+        </span>
+      </h3>
+      <svg class="chart" id="chart" viewBox="0 0 600 190" preserveAspectRatio="none" aria-label="نمودار مصرف">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#34d399" stop-opacity=".55"/>
+            <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <g id="chartGrid"></g>
+        <path class="area" id="chartArea" d=""/>
+        <path class="line" id="chartLine" d=""/>
+        <g id="chartLabels"></g>
+      </svg>
+    </section>
+
+    <section class="card">
+      <h3>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        کاربران من
+        <span class="sp" id="usersCount">—</span>
+      </h3>
+      <div class="users" id="userList">
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+      </div>
+    </section>
+  </div>
+
+
+  <section class="card" id="consoleView">
+    <h3>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M7 9l3 3-3 3"/><path d="M13 15h4"/></svg>
+      مدل کنسول
+      <span class="sp">دستور <b>help</b> را بزنید</span>
+    </h3>
+    <div class="term" id="term"></div>
+    <div class="prompt">
+      <span>admin@pasarguard:~$</span>
+      <input id="cmd" type="text" autocomplete="off" spellcheck="false" placeholder="users / stats / help" />
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>ساخته‌شده با</span><span style="color:#fb7185">♥</span><span>· PasarGuard</span>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var TOKEN = "__TOKEN__";
+  var PASS = "__PASS__";
+  var USER = "__USER__";
+  var PANEL_URL = "__PANELURL__";
+  var PANEL_ROOT = "__PANELROOT__";
+  var period = "day";
+  var profile = null;
+  var usersCache = [];
+
+  function $(id){ return document.getElementById(id); }
+  function toast(msg){
+    var t = $("toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(t._h); t._h = setTimeout(function(){ t.classList.remove("show"); }, 1900);
+  }
+  function copy(text){
+    var done = function(){ toast("کپی شد ✓"); };
+    function fallback(){
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.top = "0"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch(e){ ok = false; }
+      document.body.removeChild(ta);
+      if (ok) { done(); return; }
+      window.prompt("متن را کپی کنید:", text);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else { fallback(); }
+  }
+  function gb(bytes){
+    var v = Number(bytes) || 0;
+    if (v >= 1099511627776) return [ (v/1099511627776).toFixed(2), "TB" ];
+    if (v >= 1073741824) return [ (v/1073741824).toFixed(2), "GB" ];
+    if (v >= 1048576) return [ (v/1048576).toFixed(1), "MB" ];
+    return [ (v/1024).toFixed(0), "KB" ];
+  }
+  function api(path, opts){
+    opts = opts || {};
+    opts.headers = Object.assign({ "Authorization": "Bearer " + TOKEN, "Accept": "application/json" }, opts.headers || {});
+    return fetch(path, opts).then(function(r){
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    });
+  }
+
+  /* ---------------- profile ---------------- */
+  function renderProfile(p){
+    profile = p;
+    var name = (p && p.username) || USER;
+    $("username").textContent = name;
+    $("avatar").textContent = (name || "M").trim().charAt(0).toUpperCase();
+    var isOwner = !!(p && p.role && p.role.is_owner);
+    var roleName = isOwner ? "مالک" : ((p && p.role && p.role.name) || "مدیر");
+    $("roleTag").textContent = roleName;
+    $("roleTag").className = "tag" + (isOwner ? " gold" : "");
+    var status = String((p && p.status) || "").toLowerCase();
+    var label = status === "active" ? "فعال" : (status === "disabled" ? "غیرفعال" : (status === "limited" ? "محدود" : (status || "—")));
+    $("statusText").textContent = label;
+    $("statusDot").className = "dot" + (status === "active" ? "" : (status === "limited" ? " warn" : " off"));
+    $("kStatus").textContent = label;
+    $("kStatus").style.color = status === "active" ? "var(--ok)" : (status === "limited" ? "var(--warn)" : "var(--bad)");
+
+    var total = Number(p && p.total_users) || 0;
+    $("kUsers").textContent = total;
+    $("usersCount").textContent = total + " کاربر";
+    $("usersTag").textContent = total + " کاربر";
+
+    var used = Number(p && p.used_traffic) || 0;
+    var u = gb(used);
+    $("kUsed").textContent = u[0];
+    var limit = p && p.data_limit != null ? Number(p.data_limit) : null;
+    if (limit && limit > 0){
+      var l = gb(limit);
+      $("kLimit").textContent = l[0]; $("kLimitUnit").textContent = l[1];
+      var pct = Math.max(0, Math.min(100, (used / limit) * 100));
+      $("kUsedBar").style.width = pct.toFixed(1) + "%";
+      $("kUsedHint").textContent = pct.toFixed(1) + "% از سقف مصرف شده";
+      var rem = gb(Math.max(0, limit - used));
+      $("kRemain").textContent = "باقی‌مانده: " + rem[0] + " " + rem[1];
+    } else {
+      $("kLimit").textContent = "∞"; $("kLimitUnit").textContent = "";
+      $("kUsedBar").style.width = "100%";
+      $("kUsedHint").textContent = "بدون محدودیت حجم";
+      $("kRemain").textContent = "باقی‌مانده: نامحدود";
+    }
+    if (p && p.lifetime_used_traffic){
+      var life = gb(p.lifetime_used_traffic);
+      $("lastTag").textContent = "مصرف کل: " + life[0] + " " + life[1];
+    } else {
+      $("lastTag").textContent = "دسترسی شخصی";
+    }
+  }
+
+  /* ---------------- users ---------------- */
+  function userStatus(u){
+    var s = String(u.status || "").toLowerCase();
+    if (s === "active") return ["فعال",""];
+    if (s === "limited") return ["محدود","warn"];
+    if (s === "expired") return ["منقضی","off"];
+    if (s === "on_hold") return ["در انتظار","warn"];
+    if (s === "disabled") return ["غیرفعال","off"];
+    return [s || "—",""];
+  }
+  function isOnline(u){
+    var t = u.online_at;
+    if (!t) return false;
+    var d = new Date(t).getTime();
+    if (!d) return false;
+    return (Date.now() - d) <= 60000;
+  }
+  function renderUsers(payload){
+    var list = (payload && (payload.users || payload)) || [];
+    if (!Array.isArray(list)) list = [];
+    usersCache = list;
+    var box = $("userList");
+    box.innerHTML = "";
+    if (!list.length){
+      box.innerHTML = '<div class="empty">هنوز کاربری ساخته نشده است.</div>';
+      return;
+    }
+    var onlineCount = 0;
+    list.slice(0, 60).forEach(function(u){
+      if (isOnline(u)) onlineCount++;
+      var st = userStatus(u);
+      var used = gb(u.used_traffic);
+      var lim = u.data_limit ? gb(u.data_limit) : null;
+      var el = document.createElement("div");
+      el.className = "u";
+      var dot = '<span class="dot ' + st[1] + '" title="' + st[0] + '"></span>';
+      el.innerHTML =
+        '<div class="grow"><div class="nm">' + escapeHtml(u.username || "") + '</div>' +
+        '<div class="meta">' + used[0] + ' ' + used[1] + (lim ? ' از ' + lim[0] + ' ' + lim[1] : ' · نامحدود') + ' · ' + st[0] + '</div></div>' +
+        dot +
+        '<button class="ick" title="کپی لینک ساب" data-sub="' + escapeAttr(u.subscription_url || "") + '" data-user="' + escapeAttr(u.username || "") + '">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg></button>';
+      box.appendChild(el);
+    });
+    Array.prototype.forEach.call(box.querySelectorAll("[data-sub]"), function(btn){
+      btn.addEventListener("click", function(){
+        var url = btn.getAttribute("data-sub");
+        if (!url) { toast("لینک ساب برای این کاربر موجود نیست"); return; }
+        copy(url);
+      });
+    });
+    $("kOnline").textContent = "آنلاین " + onlineCount;
+    var active = list.filter(function(u){ return String(u.status||"").toLowerCase() === "active"; }).length;
+    $("kActive").textContent = "فعال: " + active + " · کل: " + list.length;
+  }
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]; }); }
+  function escapeAttr(s){ return escapeHtml(s); }
+
+  /* ---------------- chart ---------------- */
+  function drawChart(points){
+    var W = 600, H = 190, padL = 8, padR = 8, padT = 14, padB = 26;
+    var max = 1;
+    points.forEach(function(p){ if (p.v > max) max = p.v; });
+    var n = points.length;
+    var stepX = n > 1 ? (W - padL - padR) / (n - 1) : 0;
+    var coords = points.map(function(p, i){
+      var x = padL + stepX * i;
+      var y = padT + (H - padT - padB) * (1 - (p.v / max));
+      return [x, y];
+    });
+    var line = coords.map(function(c, i){ return (i ? "L" : "M") + c[0].toFixed(1) + " " + c[1].toFixed(1); }).join(" ");
+    var area = line + " L" + (padL + stepX * (n - 1)).toFixed(1) + " " + (H - padB) + " L" + padL + " " + (H - padB) + " Z";
+    $("chartLine").setAttribute("d", line);
+    $("chartArea").setAttribute("d", area);
+    var grid = $("chartGrid"); grid.innerHTML = "";
+    for (var g = 0; g < 4; g++){
+      var y = padT + (H - padT - padB) * (g / 3);
+      var ln = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      ln.setAttribute("x1", padL); ln.setAttribute("x2", W - padR);
+      ln.setAttribute("y1", y); ln.setAttribute("y2", y);
+      ln.setAttribute("class", "axis");
+      grid.appendChild(ln);
+    }
+    var labels = $("chartLabels"); labels.innerHTML = "";
+    var every = Math.max(1, Math.ceil(n / 6));
+    points.forEach(function(p, i){
+      if (i % every !== 0 && i !== n - 1) return;
+      var t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      t.setAttribute("x", padL + stepX * i);
+      t.setAttribute("y", H - 8);
+      t.setAttribute("text-anchor", "middle");
+      t.textContent = p.label;
+      labels.appendChild(t);
+    });
+  }
+  function loadChart(){
+    if (!profile) return;
+    var days = period === "day" ? 7 : 2;
+    var end = new Date();
+    var start = new Date(end.getTime() - days * 86400000);
+    var url = "/api/admin/" + encodeURIComponent(profile.username) + "/usage?period=" + period +
+              "&start=" + encodeURIComponent(start.toISOString()) + "&end=" + encodeURIComponent(end.toISOString());
+    api(url).then(function(res){
+      var stats = (res && res.stats) || {};
+      var buckets = {};
+      Object.keys(stats).forEach(function(uid){
+        (stats[uid] || []).forEach(function(row){
+          var key = row.period_start || "";
+          buckets[key] = (buckets[key] || 0) + (Number(row.total_traffic) || 0);
+        });
+      });
+      var keys = Object.keys(buckets).sort();
+      var points = keys.map(function(k){
+        var d = new Date(k);
+        var label = period === "day"
+          ? (d.getMonth() + 1) + "/" + d.getDate()
+          : d.getHours().toString().padStart(2, "0") + ":00";
+        return { label: label, v: buckets[k] };
+      });
+      if (points.length < 2){
+        var now = Date.now();
+        points = [];
+        for (var i = 6; i >= 0; i--){
+          var d2 = new Date(now - i * 86400000);
+          points.push({ label: (d2.getMonth() + 1) + "/" + d2.getDate(), v: 0 });
+        }
+      }
+      drawChart(points);
+    }).catch(function(){ drawChart([{label:"-",v:0},{label:"-",v:0}]); });
+  }
+
+
+  /* ---------------- mode switch ---------------- */
+  function setMode(m, save){
+    document.body.setAttribute("data-mode", m);
+    Array.prototype.forEach.call(document.querySelectorAll(".mode"), function(b){
+      b.classList.toggle("on", b.getAttribute("data-mode") === m);
+    });
+    if (m === "console") bootConsole();
+    if (save) { try { localStorage.setItem("pgmode", m); } catch(e){} }
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".mode"), function(b){
+    b.addEventListener("click", function(){ setMode(b.getAttribute("data-mode"), true); });
+  });
+
+  /* ---------------- info box ---------------- */
+  var META = null, ADMINROW = null, passShown = false;
+  function pad2(v){ return (v < 10 ? "0" : "") + v; }
+  function fmtDate(v){
+    if (!v) return "—";
+    var d = new Date(v);
+    if (isNaN(d.getTime())) return String(v);
+    return d.getFullYear() + "/" + pad2(d.getMonth() + 1) + "/" + pad2(d.getDate()) + " · " + pad2(d.getHours()) + ":" + pad2(d.getMinutes());
+  }
+  function meName(){ return (profile && profile.username) || USER; }
+  function loadMeta(){
+    var mine = api("/api/managed/admin-panels").then(function(list){
+      list = list || [];
+      var row = null;
+      for (var i = 0; i < list.length; i++){ if (list[i] && list[i].username === meName()) { row = list[i]; break; } }
+      META = row || list[0] || null;
+    }).catch(function(){});
+    var admins = api("/api/admins").then(function(res){
+      var list = (res && res.admins) || [];
+      ADMINROW = null;
+      for (var i = 0; i < list.length; i++){ if (list[i] && list[i].username === meName()) { ADMINROW = list[i]; break; } }
+    }).catch(function(){});
+    return Promise.all([mine, admins]);
+  }
+  function renderInfo(){
+    var p = profile || {};
+    var used = Number(p.used_traffic) || 0;
+    var limit = (p.data_limit != null) ? Number(p.data_limit) : null;
+    var u = gb(used), life = gb(Number(p.lifetime_used_traffic) || used);
+
+    $("iUsed").textContent = u[0] + " " + u[1];
+    $("iUsedMini").textContent = "کل مصرف: " + life[0] + " " + life[1];
+
+    if (limit && limit > 0){
+      var l = gb(limit);
+      $("iLimit").textContent = l[0] + " " + l[1];
+      $("iLimitMini").textContent = "مصرف‌شده: " + Math.min(100, (used / limit) * 100).toFixed(1) + "٪";
+      var frac = Math.max(0, limit - used), f = gb(frac);
+      $("iSplitMini").textContent = "کسری باقی‌مانده: " + f[0] + " " + f[1];
+    } else {
+      $("iLimit").textContent = "∞ نامحدود";
+      $("iLimitMini").textContent = "بدون سقف تعیین‌شده";
+      $("iSplitMini").textContent = "کسری باقی‌مانده: نامحدود";
+    }
+    $("iSplit").textContent = (META && META.created_at) ? fmtDate(META.created_at) : (p.created_at ? fmtDate(p.created_at) : "—");
+
+    // محدودیت زمانی همان چیزی است که در پنل مدیران تعیین می‌شود.
+    var expIso = (META && META.expire_at) || (ADMINROW && (ADMINROW.expire || ADMINROW.expire_at)) || null;
+    var left = (META && typeof META.seconds_left === "number") ? META.seconds_left : null;
+    $("iExpire").textContent = expIso ? fmtDate(expIso) : "بدون انقضا";
+    if (expIso && left !== null) {
+      var days = Math.floor(Math.max(0, left) / 86400);
+      var hours = Math.floor((Math.max(0, left) % 86400) / 3600);
+      $("iExpireMini").textContent = left <= 0 ? "مهلت تمام شده" : (days > 0 ? (days + " روز و " + hours + " ساعت مانده") : (hours + " ساعت مانده"));
+      $("kExpire").textContent = left <= 0 ? "مهلت تمام شده" : ("مانده: " + (days > 0 ? (days + " روز") : (hours + " ساعت")));
+    } else {
+      $("iExpireMini").textContent = expIso ? "زمان پایان پنل" : "پنل همیشه فعال";
+      $("kExpire").textContent = expIso ? ("انقضا: " + fmtDate(expIso)) : "بدون انقضا · همیشه فعال";
+    }
+
+    var tgId = ADMINROW && ADMINROW.telegram_id ? String(ADMINROW.telegram_id) : "";
+    var support = ADMINROW && ADMINROW.support_url ? String(ADMINROW.support_url) : "";
+    var link = support || (tgId ? ("https://t.me/" + tgId) : "");
+    var linkBox = $("iTgLink");
+    if (link){
+      linkBox.innerHTML = '<a href="' + escapeAttr(link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(link) + '</a>';
+    } else { linkBox.textContent = "—"; }
+    $("iTgUser").textContent = tgId || "—";
+
+    $("iPanelRoot").setAttribute("href", PANEL_ROOT);
+    $("iPanelRoot").textContent = PANEL_ROOT;
+    $("infoHint").textContent = "آخرین به‌روزرسانی: " + new Date().toLocaleTimeString("fa-IR");
+  }
+  function paintPass(){
+    $("iPass").textContent = passShown ? PASS : "••••••••••••";
+  }
+  $("eyePass").addEventListener("click", function(){ passShown = !passShown; paintPass(); });
+  $("copyPass").addEventListener("click", function(){ copy(PASS); });
+
+  /* ---------------- console mode ---------------- */
+  var termStarted = false;
+  function termWrite(html){
+    var t = $("term");
+    var d = document.createElement("div");
+    d.className = "ln";
+    d.innerHTML = html;
+    t.appendChild(d);
+    t.scrollTop = t.scrollHeight;
+  }
+  function termTable(rows){
+    var head = '<span class="ok">' + pad("USER", 14) + pad("USED", 10) + pad("LIMIT", 10) + pad("STATUS", 9) + "EXPIRE</span>";
+    termWrite(head);
+    termWrite('<span class="dim">' + new Array(58).join("─") + '</span>');
+    rows.forEach(function(r){
+      termWrite(esc(pad(r.username, 14) + pad(r.used, 10) + pad(r.limit, 10) + pad(r.status, 9) + r.expire));
+    });
+  }
+  function pad(v, n){
+    v = String(v == null ? "" : v);
+    if (v.length >= n) return v.slice(0, n - 1) + " ";
+    return v + new Array(n - v.length + 1).join(" ");
+  }
+  function esc(t){ return String(t == null ? "" : t).replace(/[&<>]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; }); }
+  function consoleRows(){
+    return (usersCache || []).map(function(u){
+      var used = gb(u.used_traffic);
+      var lim = u.data_limit ? gb(u.data_limit) : null;
+      var st = userStatus(u);
+      var exp = u.expire ? new Date(u.expire) : null;
+      return {
+        username: u.username || "-",
+        used: used[0] + used[1],
+        limit: lim ? (lim[0] + lim[1]) : "inf",
+        status: String(u.status || "-").toLowerCase(),
+        expire: exp && !isNaN(exp.getTime()) ? (exp.getFullYear() + "-" + pad2(exp.getMonth() + 1) + "-" + pad2(exp.getDate())) : "-"
+      };
+    });
+  }
+  function bootConsole(){
+    if (termStarted) return;
+    termStarted = true;
+    termWrite('<span class="dim">PasarGuard admin console</span> <span class="dim">·</span> <span class="hl">' + esc(meName()) + '</span> <span class="dim">·</span> <span class="dim">' + esc(new Date().toLocaleString("fa-IR")) + '</span>');
+    termWrite('<span class="dim">برای دیدن دستورها help را بزنید.</span>');
+    runCmd("stats");
+  }
+  function runCmd(raw){
+    var line = String(raw || "").trim();
+    var parts = line.split(/\s+/);
+    var cmd = (parts[0] || "").toLowerCase();
+    termWrite('<span class="cmd">admin@pasarguard:~$</span> ' + esc(line) + ' <span class="caret"></span>');
+    if (!cmd) { return; }
+    if (cmd === "help"){
+      termWrite('<span class="hl">دستورهای موجود</span>');
+      termWrite('  <span class="ok">stats</span>              خلاصهٔ وضعیت پنل');
+      termWrite('  <span class="ok">users</span> [n]          جدول کاربران (پیش‌فرض ۲۰)');
+      termWrite('  <span class="ok">top</span>                پر مصرف‌ترین کاربر');
+      termWrite('  <span class="ok">copy</span> &lt;user&gt;       کپی لینک ساب کاربر');
+      termWrite('  <span class="ok">panel</span>              رفتن به پنل کامل');
+      termWrite('  <span class="ok">refresh</span>            به‌روزرسانی داده‌ها');
+      termWrite('  <span class="ok">mode pg</span>            بازگشت به مدل پاسارگارد');
+      termWrite('  <span class="ok">clear</span>              پاک کردن صفحه');
+      return;
+    }
+    if (cmd === "clear"){ $("term").innerHTML = ""; return; }
+    if (cmd === "mode"){
+      if ((parts[1] || "").toLowerCase() === "pg"){ setMode("pg", true); toast("مدل پاسارگارد فعال شد"); return; }
+      termWrite('<span class="err">mode pg</span> <span class="dim">تنها حالت موجود است</span>'); return;
+    }
+    if (cmd === "panel"){ window.location.href = PANEL_ROOT + "#/"; return; }
+    if (cmd === "refresh"){ loadAll().then(function(){ termWrite('<span class="dim">داده‌ها تازه شد.</span>'); }); return; }
+    if (cmd === "stats"){
+      var p = profile || {};
+      var used = gb(Number(p.used_traffic) || 0);
+      var lim = (p.data_limit != null) ? gb(Number(p.data_limit)) : null;
+      var online = (usersCache || []).filter(isOnline).length;
+      termWrite('  <span class="dim">admin   :</span> <span class="hl">' + esc(meName()) + '</span>' + (p.role && p.role.is_owner ? ' <span class="ok">(owner)</span>' : ''));
+      termWrite('  <span class="dim">users   :</span> ' + (Number(p.total_users) || 0) + '  <span class="dim">online:</span> ' + online);
+      termWrite('  <span class="dim">traffic :</span> ' + used[0] + " " + used[1] + ' / ' + (lim ? (lim[0] + " " + lim[1]) : '<span class="ok">unlimited</span>'));
+      termWrite('  <span class="dim">status  :</span> ' + esc(String(p.status || "-")) + '  <span class="dim">panel:</span> <a href="' + escapeAttr(PANEL_ROOT) + '" style="color:#8affc4">' + esc(PANEL_URL) + '</a>');
+      return;
+    }
+    if (cmd === "users" || cmd === "ls"){
+      var n = parseInt(parts[1], 10);
+      if (!n || n <= 0) n = 20;
+      var rows = consoleRows();
+      if (!rows.length){ termWrite('<span class="dim">کاربری ثبت نشده است.</span>'); return; }
+      termTable(rows.slice(0, n));
+      if (rows.length > n) termWrite('<span class="dim">… ' + (rows.length - n) + ' کاربر دیگر</span>');
+      return;
+    }
+    if (cmd === "top"){
+      var best = null;
+      (usersCache || []).forEach(function(u){ if (!best || Number(u.used_traffic) > Number(best.used_traffic)) best = u; });
+      if (!best){ termWrite('<span class="dim">کاربری نیست.</span>'); return; }
+      var ub = gb(best.used_traffic);
+      termWrite('  <span class="hl">' + esc(best.username) + '</span> <span class="dim">→</span> ' + ub[0] + " " + ub[1]);
+      return;
+    }
+    if (cmd === "copy"){
+      var target = parts.slice(1).join(" ");
+      var hit = null;
+      (usersCache || []).forEach(function(u){ if (String(u.username) === target) hit = u; });
+      if (!hit){ termWrite('<span class="err">user not found</span>'); return; }
+      if (!hit.subscription_url){ termWrite('<span class="err">لینک ساب موجود نیست</span>'); return; }
+      copy(hit.subscription_url);
+      termWrite('<span class="dim">لینک ساب ' + esc(target) + ' کپی شد.</span>');
+      return;
+    }
+    termWrite('<span class="err">command not found:</span> ' + esc(cmd) + ' <span class="dim">(help)</span>');
+  }
+  $("cmd").addEventListener("keydown", function(e){
+    if (e.key === "Enter"){ runCmd(this.value); this.value = ""; }
+  });
+
+  /* ---------------- boot ---------------- */
+  function loadAll(){
+    $("statusText").textContent = "در حال بارگذاری…";
+    $("statusDot").className = "dot warn";
+    return api("/api/admin").then(function(p){
+      renderProfile(p);
+      return api("/api/users?limit=100&offset=0").then(renderUsers).catch(function(){ renderUsers([]); });
+    }).then(function(){
+      return loadMeta();
+    }).then(function(){
+      renderInfo();
+      loadChart();
+      $("statusText").textContent = "متصل";
+    }).catch(function(err){
+      $("statusText").textContent = "خطا در دریافت داده";
+      $("statusDot").className = "dot off";
+      toast("اتصال به سرور برقرار نشد");
+    });
+  }
+
+  $("enterPanel").addEventListener("click", function(){
+    try {
+      localStorage.setItem("token", TOKEN);
+      localStorage.setItem("lang", "fa");
+      localStorage.setItem("i18nextLng", "fa");
+    } catch(e){}
+    window.location.href = PANEL_ROOT + "#/";
+  });
+  $("refresh").addEventListener("click", function(){ toast("تازه شد"); loadAll(); });
+  $("copyPanel").addEventListener("click", function(){ copy(PANEL_URL); });
+  Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function(b){
+    b.addEventListener("click", function(){
+      Array.prototype.forEach.call(document.querySelectorAll(".seg button"), function(x){ x.classList.remove("on"); });
+      b.classList.add("on");
+      period = b.getAttribute("data-period");
+      loadChart();
+    });
+  });
+
+  paintPass();
+  try { var savedMode = localStorage.getItem("pgmode"); if (savedMode === "console" || savedMode === "pg") setMode(savedMode, false); } catch(e){}
+  loadAll();
+  setInterval(function(){ loadAll(); }, 20000);
+})();
+</script>
+</body>
+</html>

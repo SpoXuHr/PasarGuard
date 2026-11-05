@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-NZYk81nU.js";import{f as t,h as n,o as r}from"./use-dir-detection-CCnhsMPe.js";var i=e();function a({isLoading:e=!1,loadingText:a,children:o,className:s,disabled:c,...l}){return(0,i.jsxs)(r,{disabled:e||c,className:n(`relative`,s),...l,children:[e&&(0,i.jsx)(t,{className:`mr-2 h-4 w-4 animate-spin`}),e&&a?a:o]})}export{a as t};

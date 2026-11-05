@@ -1,0 +1,1 @@
+var e=`chacha20-ietf-poly1305`;export{e as t};

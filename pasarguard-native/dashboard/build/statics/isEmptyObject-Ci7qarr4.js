@@ -1,0 +1,1 @@
+function e(e){return e?Object.keys(e).length===0&&e.constructor===Object:!1}export{e as t};

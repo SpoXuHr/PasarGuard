@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en" data-density="comfortable" data-surface="subtle">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/TeamGuccI/pasarguard/statics/favicon/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <link href="/TeamGuccI/pasarguard/statics/fonts/fonts.css" rel="stylesheet" />
+    <meta name="theme-color" content="#1b1b1d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link rel="apple-touch-icon" href="/TeamGuccI/pasarguard/statics/favicon/logo-pwa.png" />
+    <link rel="manifest" href="/TeamGuccI/pasarguard/statics/favicon/site.webmanifest" />
+    <title>PasarGuard</title>
+    <script type="module" crossorigin src="/TeamGuccI/pasarguard/statics/index-Biz2ex_l.js"></script>
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/rolldown-runtime-hePW80VL.js">
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/react-CwJFpaho.js">
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/jsx-runtime-NZYk81nU.js">
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/preload-helper-Czpn1I53.js">
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/http-CLT6FVJ2.js">
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/api-CN11mh5e.js">
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/use-dir-detection-CCnhsMPe.js">
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/dist-hAhq4sUd.js">
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/dist-BUTEULTA.js">
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/dist-B6C4z17a.js">
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/dist-CLZFSENW.js">
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/dist-DJ6vEwLw.js">
+    <link rel="modulepreload" crossorigin href="/TeamGuccI/pasarguard/statics/es2015-Dk6bXhPC.js">
+    <link rel="stylesheet" crossorigin href="/TeamGuccI/pasarguard/statics/index-DqnzqrJJ.css">
+  <link rel="manifest" href="/manifest.webmanifest">
+<script data-kb-fetch-retry="1">
+(function () {
+  if (window.__kbFetchRetryInstalled) return;
+  window.__kbFetchRetryInstalled = true;
+  var origFetch = window.fetch.bind(window);
+  var MAX_MS = 300000; // ride out a full backend/container restart (~3 min worst case)
+  var WAITS = [400, 800, 1500, 3000, 5000, 8000];
+  function meta(input, init) {
+    var url = "", method = "GET";
+    try {
+      if (typeof input === "string" || input instanceof URL) url = String(input);
+      else if (input && input.url) { url = input.url; if (input.method) method = input.method; }
+      if (init && init.method) method = init.method;
+    } catch (e) {}
+    return { url: url, method: String(method || "GET").toUpperCase() };
+  }
+  function retryable(url, method) {
+    if (method !== "GET" && method !== "HEAD") return false;
+    try {
+      var u = new URL(url, window.location.href);
+      return u.origin === window.location.origin && u.pathname.indexOf("/api/") >= 0;
+    } catch (e) { return false; }
+  }
+  function delay(ms, signal) {
+    return new Promise(function (resolve, reject) {
+      if (signal && signal.aborted) { reject(signal.reason || new DOMException("Aborted", "AbortError")); return; }
+      var t = setTimeout(resolve, ms);
+      if (signal && signal.addEventListener) {
+        signal.addEventListener("abort", function () {
+          clearTimeout(t);
+          reject(signal.reason || new DOMException("Aborted", "AbortError"));
+        }, { once: true });
+      }
+    });
+  }
+  window.fetch = async function (input, init) {
+    var m = meta(input, init);
+    if (!retryable(m.url, m.method)) return origFetch(input, init);
+    var signal = (init && init.signal) || (input && input.signal) || null;
+    var started = Date.now();
+    var attempt = 0;
+    while (true) {
+      try {
+        var res = await origFetch(input, init);
+        if ([502, 503, 504].indexOf(res.status) < 0) return res;
+        if (Date.now() - started > MAX_MS) return res;
+      } catch (err) {
+        if (signal && signal.aborted) throw err;
+        if (err && err.name === "AbortError") throw err;
+        if (Date.now() - started > MAX_MS) throw err;
+      }
+      var wait = WAITS[Math.min(attempt, WAITS.length - 1)];
+      attempt += 1;
+      await delay(wait, signal);
+    }
+  };
+})();
+
+    </script>
+<script id="kb-no-owner">(function(){function k(){var n=document.querySelectorAll("button,a");for(var i=0;i<n.length;i++){var t=(n[i].textContent||"").replace(/\s+/g," ").trim();if(/^Owner access$/i.test(t)){n[i].style.display="none";n[i].setAttribute("aria-hidden","true");}}}if(document.readyState!=="loading")k();document.addEventListener("DOMContentLoaded",k);try{new MutationObserver(k).observe(document.documentElement,{childList:true,subtree:true});}catch(e){}})();</script>
+<script id="kb-clip-http">(function(){if(window.__kbClip)return;window.__kbClip=1;
+function copyText(t){try{var a=document.createElement("textarea");a.value=String(t);a.setAttribute("readonly","");a.style.cssText="position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0;";document.body.appendChild(a);a.focus();a.select();if(a.setSelectionRange)try{a.setSelectionRange(0,a.value.length);}catch(e){}var ok=document.execCommand("copy");setTimeout(function(){try{document.body.removeChild(a);}catch(e){}},700);return ok;}catch(e){return false;}}
+function make(){return{writeText:function(t){return new Promise(function(res,rej){copyText(t)?res():rej(new Error("copy failed"));});},readText:function(){return Promise.resolve("");}};}
+try{if(!navigator.clipboard||typeof navigator.clipboard.writeText!=="function"){Object.defineProperty(navigator,"clipboard",{value:make(),configurable:true,writable:true});}}catch(e){try{navigator.clipboard=make();}catch(e2){}}
+})();
+</script>
+<script id="kb-access-guard">(function(){try{if(!localStorage.getItem("kbSwCleaned2")){localStorage.setItem("kbSwCleaned2","1");if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)navigator.serviceWorker.getRegistrations().then(function(a){a.forEach(function(x){x.unregister()})});if(window.caches&&caches.keys)caches.keys().then(function(a){a.forEach(function(x){caches.delete(x)})})}}catch(e){}var f=window.fetch;if(f&&!window.__kbFetchGuard){window.__kbFetchGuard=1;window.fetch=function(){return f.apply(this,arguments).then(function(res){try{if(res&&res.status===403){res.clone().json().then(function(b){var d=String(b&&(b.detail||b.message)||"");if(/quota exhausted|account has been disabled|admin access has expired/i.test(d)){sessionStorage.setItem("pgAccessError",/expired/i.test(d)?"\u0645\u0647\u0644\u062a \u0646\u0645\u0627\u06cc\u0646\u062f\u06af\u06cc \u0634\u0645\u0627 \u062a\u0645\u0627\u0645 \u0634\u062f\u0647 \u0627\u0633\u062a. \u0628\u0631\u0627\u06cc \u062a\u0645\u062f\u06cc\u062f \u0628\u0627 \u0645\u0627\u0644\u06a9 \u062a\u0645\u0627\u0633 \u0628\u06af\u06cc\u0631\u06cc\u062f.":"\u062d\u062c\u0645 \u0646\u0645\u0627\u06cc\u0646\u062f\u06af\u06cc \u062a\u0645\u0627\u0645 \u0634\u062f\u0647 \u06cc\u0627 \u062d\u0633\u0627\u0628 \u063a\u06cc\u0631\u0641\u0639\u0627\u0644 \u0627\u0633\u062a. \u0628\u0631\u0627\u06cc \u062a\u0645\u062f\u06cc\u062f \u0628\u0627 \u0645\u0627\u0644\u06a9 \u062a\u0645\u0627\u0633 \u0628\u06af\u06cc\u0631\u06cc\u062f.");try{localStorage.removeItem("token")}catch(e){}if(location.hash.split("?")[0]!=="#/login")location.hash="#/login"}}).catch(function(){})}}catch(e){}return res})}}})();</script>
+</head>
+  <body>
+    <div id="root"></div>
+  
+<script id="kb-ovpn-creds">
+/* kb-ovpn-creds: کادر «اطلاعات اتصال OpenVPN» داخل پنجرهٔ ساخت/ویرایش کاربر.
+ *
+ * رفتار (طبق چیزی که کاربر خواست):
+ *   • حالت «ویرایش»: کادر از ابتدا همان یوزر/پسی را نشان می‌دهد که همین حالا روی
+ *     سرور فعال است (از profiles خوانده می‌شود) — پیش‌فرض، نه رندوم تازه.
+ *   • حالت «ساخت کاربر»: چون هنوز اکانتی نیست، یک جفت رندومِ یکتا از قبل پر است.
+ *   • ⟳ رندوم: هر دو را عوض می‌کند. ⧉ کپی: هر دو را کپی می‌کند.
+ *   • 💾 ذخیره: فقط «ثبت موقت» است؛ هیچ درخواستی به سرور نمی‌فرستد.
+ *   • اعمال واقعی فقط با دکمهٔ آبی «ویرایش» (PUT کاربر) یا «ایجاد» (ساخت کاربر)
+ *     انجام می‌شود؛ آن‌وقت مقادیرِ ثبت‌شده روی اکانت نوشته می‌شوند.
+ *
+ * هیچ متن توضیحی روی کادر نوشته نشده (فقط عنوان + دو فیلد + سه دکمه).
+ * کل کد در try/catch است: در بدترین حالت فقط این کادر دیده نمی‌شود.
+ */
+(function () {
+  "use strict";
+  if (window.__kbOvpnCreds) return;
+  window.__kbOvpnCreds = 1;
+
+  var BASE = "/TeamGuccI";
+  var CRED_API = BASE + "/panel/api/openvpn/credentials";
+  var PROFILES_API = BASE + "/panel/api/openvpn/profiles";
+  var SUFFIX = "+b:0+f1+f2+nr+pmp";
+  var UPPER = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+  var LOWER = "abcdefghijkmnopqrstuvwxyz";
+  var DIGIT = "23456789";
+  var ALL = UPPER + LOWER + DIGIT;
+
+  var SAVE_LABEL = "💾 ذخیره";
+  var STAGED_LABEL = "✓ ذخیره";
+
+  var state = {
+    email: "", profiles: null, profilesAt: 0, saving: false, auth: "",
+    fields: { username: "", password: "" },
+    pending: null,          // credentials staged with 💾 (not on the server yet)
+    mode: "",               // "edit" | "create"
+    dialogOpen: false, closedAt: 0, openAt: 0,
+    commitTimer: null, committing: false, resolving: false, groupOn: true
+  };
+
+  function ra(n) {
+    var b = new Uint8Array(1);
+    (window.crypto || window.msCrypto).getRandomValues(b);
+    return b[0] % n;
+  }
+  function randUser() {
+    var out = "";
+    for (var i = 0; i < 16; i += 1) out += ALL.charAt(ra(ALL.length));
+    return out + SUFFIX;
+  }
+  function randPass() {
+    var chars = [UPPER.charAt(ra(UPPER.length)), LOWER.charAt(ra(LOWER.length)), DIGIT.charAt(ra(DIGIT.length))];
+    while (chars.length < 32) chars.push(ALL.charAt(ra(ALL.length)));
+    for (var i = chars.length - 1; i > 0; i -= 1) {
+      var j = ra(i + 1), t = chars[i]; chars[i] = chars[j]; chars[j] = t;
+    }
+    return chars.join("");
+  }
+
+  function toast(msg, ok) {
+    try {
+      var d = document.createElement("div");
+      d.textContent = msg;
+      d.style.cssText = "position:fixed;z-index:2147483647;left:50%;transform:translateX(-50%);bottom:22px;"
+        + "padding:10px 16px;border-radius:10px;font:13px/1.5 system-ui,sans-serif;max-width:92vw;text-align:center;"
+        + "box-shadow:0 8px 30px rgba(0,0,0,.45);color:#fff;background:" + (ok === false ? "#b3261e" : "#1f7a4d") + ";";
+      document.body.appendChild(d);
+      setTimeout(function () { try { d.remove(); } catch (e) {} }, 3800);
+    } catch (e) {}
+  }
+
+  function visible(node) {
+    try {
+      if (node.hasAttribute("hidden") || node.getAttribute("aria-hidden") === "true") return false;
+      var st = window.getComputedStyle(node);
+      if (st.display === "none" || st.visibility === "hidden") return false;
+      var r = node.getBoundingClientRect();
+      return r.width > 0 && r.height > 0;
+    } catch (e) { return true; }
+  }
+
+  // Titles differ per language ("Create user", "افزودن کاربر", "Modify user", …),
+  // so a dialog also counts as the user form when it carries the groups list and
+  // a form — that check does not depend on any translation.
+  var CREATE_HINTS = ["create user", "add user", "new user", "ساخت کاربر", "کاربر جدید", "ایجاد کاربر", "افزودن کاربر"];
+  var EDIT_HINTS = ["edit user", "modify user", "update user", "ویرایش کاربر", "ویرایش"];
+
+  function hintsMatch(text, hints) {
+    for (var i = 0; i < hints.length; i += 1) {
+      if (text.indexOf(hints[i]) >= 0) return true;
+    }
+    return false;
+  }
+
+  function looksLikeUserForm(dialog) {
+    try {
+      if (dialog.querySelectorAll('[role="checkbox"]').length < 2) return false;
+      var inputs = dialog.querySelectorAll("input,textarea,select");
+      return inputs.length > 0;
+    } catch (e) { return false; }
+  }
+
+  function findDialog() {
+    var all = document.querySelectorAll('#app [role="dialog"],[role="dialog"]');
+    var last = null;
+    for (var i = all.length - 1; i >= 0; i -= 1) {
+      var d = all[i];
+      if (!d) continue;
+      var t = (d.textContent || "").toLowerCase();
+      if (!hintsMatch(t, CREATE_HINTS) && !hintsMatch(t, EDIT_HINTS) && !looksLikeUserForm(d)) continue;
+      if (!last) last = d;
+      if (visible(d)) return d;
+    }
+    return last;
+  }
+
+  function dialogMode(dialog) {
+    var t = (dialog && dialog.textContent || "").toLowerCase();
+    if (hintsMatch(t, EDIT_HINTS)) return "edit";
+    if (hintsMatch(t, CREATE_HINTS)) return "create";
+    return "";
+  }
+
+  // Is the "OpenVPN" group ticked in this dialog? The groups list renders every
+  // entry as <label><button role="checkbox" aria-checked="true|false">…</button></label>,
+  // so the state is read straight off the ARIA attribute.
+  function openVpnGroupSelected(dialog) {
+    if (!dialog) return null;
+    var labels = dialog.querySelectorAll("label");
+    for (var i = 0; i < labels.length; i += 1) {
+      var label = labels[i];
+      if (label.closest("[data-kb-ovpn-box]")) continue;
+      var leaves = label.querySelectorAll("*");
+      var named = false;
+      for (var j = 0; j < leaves.length; j += 1) {
+        if (leaves[j].children.length) continue;
+        if ((leaves[j].textContent || "").trim().toLowerCase() !== "openvpn") continue;
+        named = true;
+        break;
+      }
+      if (!named) continue;
+      var btn = label.querySelector('[role="checkbox"]');
+      if (btn) {
+        var aria = btn.getAttribute("aria-checked");
+        if (aria === "true") return true;
+        if (aria === "false") return false;
+        var st = btn.getAttribute("data-state");
+        if (st) return st === "checked";
+      }
+      var input = label.querySelector('input[type="checkbox"]');
+      if (input) return Boolean(input.checked);
+      return null;
+    }
+    return null;
+  }
+
+  function scrollHost(dialog) {
+    var best = null, bestH = 0;
+    var kids = dialog.querySelectorAll("div");
+    for (var i = 0; i < kids.length; i += 1) {
+      var k = kids[i], st = window.getComputedStyle(k);
+      if (!/auto|scroll/.test(st.overflowY)) continue;
+      if (k.scrollHeight > bestH) { best = k; bestH = k.scrollHeight; }
+    }
+    return best || dialog;
+  }
+
+  function flash(input) {
+    try {
+      var old = input.style.boxShadow;
+      input.style.boxShadow = "0 0 0 2px rgba(87,211,140,.55)";
+      setTimeout(function () { input.style.boxShadow = old; }, 700);
+    } catch (e) {}
+  }
+
+  function el(tag, css, text) {
+    var n = document.createElement(tag);
+    if (css) n.style.cssText = css;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function field(labelText, placeholder, kind) {
+    var wrap = el("div", "width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;margin-top:10px;");
+    wrap.appendChild(el("span", "font-size:11.5px;opacity:.75;letter-spacing:.2px;", labelText));
+    var row = el("div", "display:flex;gap:6px;align-items:center;width:100%;");
+    var input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = placeholder;
+    input.spellcheck = false;
+    input.autocomplete = "off";
+    input.setAttribute("data-kb-ovpn", kind);
+    input.style.cssText = "flex:1 1 auto;min-width:0;height:36px;padding:0 11px;border-radius:9px;font:13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;"
+      + "border:1px solid rgba(125,125,125,.5);background:rgba(125,125,125,.09);color:inherit;outline:none;box-sizing:border-box;";
+    var copy = el("button", "flex:0 0 auto;height:36px;width:36px;border-radius:9px;cursor:pointer;"
+      + "border:1px solid rgba(125,125,125,.5);background:rgba(125,125,125,.09);color:inherit;font-size:13px;line-height:1;", "⧉");
+    copy.type = "button";
+    copy.title = "کپی";
+    copy.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(input.value);
+        else { input.select(); document.execCommand("copy"); }
+        toast("کپی شد");
+      } catch (e) {}
+    });
+    row.appendChild(input); row.appendChild(copy);
+    wrap.appendChild(row);
+    return { wrap: wrap, input: input };
+  }
+
+  function control(icon, label, accent, onClick) {
+    var wrap = el("div", "display:flex;flex-direction:column;align-items:center;gap:4px;flex:1 1 auto;min-width:0;");
+    var btn = el("button", "width:100%;box-sizing:border-box;height:36px;padding:0 10px;border-radius:9px;cursor:pointer;"
+      + "display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;white-space:nowrap;"
+      + (accent
+        ? "border:1px solid rgba(87,211,140,.55);background:rgba(87,211,140,.16);font-weight:600;color:inherit;"
+        : "border:1px solid rgba(125,125,125,.5);background:rgba(125,125,125,.09);color:inherit;"),
+      icon + " " + label);
+    btn.type = "button";
+    btn.setAttribute("data-kb-ovpn-action", label);
+    btn.addEventListener("click", function (ev) { ev.preventDefault(); onClick(ev); });
+    wrap.appendChild(btn);
+    return { wrap: wrap, btn: btn };
+  }
+
+  function setSaveLabel(box, text) {
+    try {
+      var b = box.__kb.saveBtn;
+      b.textContent = text;
+      b.setAttribute("data-kb-staged", text === STAGED_LABEL ? "1" : "0");
+    } catch (e) {}
+  }
+
+  function build() {
+    var box = el("div", "grid-column:1 / -1;width:100%;box-sizing:border-box;margin-top:14px;padding:12px;border-radius:12px;text-align:start;"
+      + "border:1px solid rgba(125,125,125,.4);background:rgba(125,125,125,.05);");
+    box.setAttribute("data-kb-ovpn-box", "1");
+
+    box.appendChild(el("div", "display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;",
+      "🔐 اطلاعات اتصال OpenVPN"));
+
+    var u = field("یوزرنیم (Username)", "", "username");
+    var p = field("پسورد (Password)", "", "password");
+    box.appendChild(u.wrap); box.appendChild(p.wrap);
+
+    function roll() {
+      u.input.value = randUser();
+      p.input.value = randPass();
+      state.fields.username = u.input.value;
+      state.fields.password = p.input.value;
+      flash(u.input); flash(p.input);
+      unstage(box);
+    }
+    function copyBoth() {
+      var text = ((u.input.value || "") + "\n" + (p.input.value || "")).trim();
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text);
+        else { var t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }
+        toast("یوزرنیم و پسورد کپی شد");
+      } catch (e) {}
+    }
+
+    var bar = el("div", "display:flex;gap:8px;align-items:stretch;margin-top:12px;width:100%;box-sizing:border-box;");
+    var rnd = control("⟳", "رندوم", false, roll);
+    var cpy = control("⧉", "کپی", false, copyBoth);
+    var sav = control("💾", "ذخیره", true, function () { stage(); });
+    bar.appendChild(rnd.wrap); bar.appendChild(cpy.wrap); bar.appendChild(sav.wrap);
+    box.appendChild(bar);
+
+    var status = el("span", "font-size:10.5px;opacity:.6;margin-top:6px;display:none;");
+    box.appendChild(status);
+
+    // Edit mode: no random default — the live pair is filled from the server.
+    // Create mode: a fresh unique pair is pre-filled because no account exists yet.
+    if (state.mode !== "edit" && !state.fields.username && !state.fields.password) {
+      state.fields.username = randUser();
+      state.fields.password = randPass();
+    }
+    u.input.value = state.fields.username || "";
+    p.input.value = state.fields.password || "";
+
+    function remember() {
+      var cu = u.input.value, cp = p.input.value;
+      if (state.fields.username === cu && state.fields.password === cp) return;
+      state.fields.username = cu;
+      state.fields.password = cp;
+      // Typing over a staged pair cancels the staging: 💾 must be pressed again.
+      if (state.pending) unstage(box);
+    }
+    u.input.addEventListener("input", remember);
+    p.input.addEventListener("input", remember);
+    u.input.addEventListener("change", remember);
+    p.input.addEventListener("change", remember);
+    box.addEventListener("click", function () { setTimeout(remember, 0); });
+
+    box.__kb = { username: u.input, password: p.input, status: status, saveBtn: sav.btn };
+    if (state.pending) setSaveLabel(box, STAGED_LABEL);
+    return box;
+  }
+
+  // The dialog's own primary (blue) button — the final "Modify"/"Create".
+  function primarySubmit(dialog) {
+    var btns = dialog.querySelectorAll('button[type="submit"]');
+    var found = null;
+    for (var i = 0; i < btns.length; i += 1) {
+      if (btns[i].closest("[data-kb-ovpn-box]")) continue;
+      found = btns[i];
+    }
+    if (found) return found;
+    var all = dialog.querySelectorAll("button");
+    for (var j = all.length - 1; j >= 0; j -= 1) {
+      var b = all[j];
+      if (b.closest("[data-kb-ovpn-box]")) continue;
+      if (/bg-primary/.test(String(b.className || ""))) return b;
+    }
+    return null;
+  }
+
+  // A staged pair has to be confirmable: the panel keeps its submit disabled
+  // while no field changed, so it is re-enabled for that click only.
+  function enableSubmit() {
+    if (!state.pending) return;
+    try {
+      var d = findDialog();
+      if (!d) return;
+      var btn = primarySubmit(d);
+      if (!btn) return;
+      if (btn.disabled || btn.hasAttribute("disabled")) {
+        btn.disabled = false;
+        btn.removeAttribute("disabled");
+        btn.setAttribute("data-kb-staged-submit", "1");
+      }
+    } catch (e) {}
+  }
+
+  function scheduleCommit(delay) {
+    if (!state.pending || state.commitTimer) return;
+    state.commitTimer = setTimeout(function () {
+      state.commitTimer = null;
+      commitPending(state.email || currentUsernameGuess());
+    }, typeof delay === "number" ? delay : 1200);
+  }
+
+  function unstage(box) {
+    state.pending = null;
+    if (state.commitTimer) { clearTimeout(state.commitTimer); state.commitTimer = null; }
+    if (!box) box = document.querySelector("[data-kb-ovpn-box]");
+    if (box) setSaveLabel(box, SAVE_LABEL);
+  }
+
+  // 💾 only records the pair. Nothing reaches the server until the blue
+  // "ویرایش" / "ایجاد" button submits the form.
+  function stage() {
+    var box = document.querySelector("[data-kb-ovpn-box]");
+    if (!box) return;
+    var username = (box.__kb.username.value || "").trim();
+    var password = (box.__kb.password.value || "").trim();
+    if (!username || !password) {
+      toast("یوزرنیم و پسورد را پر کن", false);
+      return;
+    }
+    state.pending = { username: username, password: password, email: state.email || currentUsernameGuess(), at: Date.now() };
+    state.fields.username = username;
+    state.fields.password = password;
+    setSaveLabel(box, STAGED_LABEL);
+    enableSubmit();
+    flash(box.__kb.username); flash(box.__kb.password);
+    toast("ثبت شد");
+  }
+
+  function fill(box, username, password) {
+    try {
+      box.__kb.username.value = username || "";
+      box.__kb.password.value = password || "";
+    } catch (e) {}
+  }
+
+  function setStatus(box, text) {
+    try {
+      box.__kb.status.textContent = text || "";
+      box.__kb.status.style.display = text ? "block" : "none";
+    } catch (e) {}
+  }
+
+  function deepUsername(obj, depth) {
+    if (!obj || depth > 4) return "";
+    if (typeof obj === "string") return "";
+    var keys = ["username", "email"];
+    for (var i = 0; i < keys.length; i += 1) {
+      var v = obj[keys[i]];
+      if (typeof v === "string" && v.trim()) return v.trim();
+    }
+    for (var k in obj) {
+      if (!Object.prototype.hasOwnProperty.call(obj, k)) continue;
+      var child = obj[k];
+      if (child && typeof child === "object") {
+        var found = deepUsername(child, depth + 1);
+        if (found) return found;
+      }
+    }
+    return "";
+  }
+
+  function authHeaders(extra) {
+    var h = extra || {};
+    h["X-Requested-With"] = "XMLHttpRequest";
+    if (state.auth) h["Authorization"] = state.auth;
+    return h;
+  }
+
+  function captureAuth(input, init) {
+    try {
+      var h = (init && init.headers) || (input && input.headers);
+      var value = null;
+      if (h) {
+        if (typeof h.get === "function") value = h.get("authorization");
+        else if (Array.isArray(h)) {
+          for (var i = 0; i < h.length; i += 1) {
+            if (String(h[i][0]).toLowerCase() === "authorization") value = h[i][1];
+          }
+        } else {
+          for (var k in h) {
+            if (Object.prototype.hasOwnProperty.call(h, k) && k.toLowerCase() === "authorization") value = h[k];
+          }
+        }
+      }
+      if (value && /^Bearer\s+/i.test(String(value))) { state.auth = String(value); return; }
+      if (state.auth) return;
+      var keys = ["token", "access_token", "accessToken", "auth"];
+      for (var j = 0; j < keys.length; j += 1) {
+        var raw = null;
+        try { raw = localStorage.getItem(keys[j]) || sessionStorage.getItem(keys[j]); } catch (e) {}
+        if (!raw) continue;
+        var text = String(raw).replace(/^"|"$/g, "");
+        try { var parsed = JSON.parse(text); if (parsed && parsed.access_token) text = parsed.access_token; } catch (e) {}
+        if (/^ey[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\./.test(text)) { state.auth = "Bearer " + text; return; }
+      }
+    } catch (e) {}
+  }
+
+  function postJSON(url, body) {
+    return fetch(url, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: authHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify(body)
+    }).then(function (r) { return r.json().catch(function () { return {}; }); });
+  }
+
+  // A user created seconds ago is not mirrored into the OpenVPN layer's
+  // database yet, so the first POST can answer "Account not found".
+  var RETRY_MS = [800, 1500, 2500, 4000, 6000, 8000, 10000];
+
+  function applyCreds(email, username, password, manual, attempt) {
+    var tries = typeof attempt === "number" ? attempt : 0;
+    var box = document.querySelector("[data-kb-ovpn-box]");
+    if (!username || !password) {
+      if (manual) toast("یوزرنیم و پسورد را پر کن", false);
+      return Promise.resolve(false);
+    }
+    if (!email) {
+      if (manual) toast("کاربر مشخص نشد", false);
+      return Promise.resolve(false);
+    }
+    state.saving = true;
+    if (box) setStatus(box, "");
+    return postJSON(CRED_API, { email: email, username: username, password: password })
+      .then(function (res) {
+        if (res && res.success) {
+          state.saving = false;
+          state.pending = null;
+          state.fields.username = username;
+          state.fields.password = password;
+          state.profiles = null; state.profilesAt = 0;
+          if (box) {
+            fill(box, username, password);
+            setSaveLabel(box, SAVE_LABEL);
+          }
+          setTimeout(function () { verifyApplied(email, username, password, 0); }, 2200);
+          return true;
+        }
+        var msg = String((res && (res.msg || res.detail)) || "");
+        if ((/not found/i.test(msg) || /unauthorized/i.test(msg)) && tries < RETRY_MS.length) {
+          setTimeout(function () { applyCreds(email, username, password, manual, tries + 1); }, RETRY_MS[tries]);
+          return false;
+        }
+        state.saving = false;
+        toast("اعمال نشد: " + (msg || "خطای نامشخص"), false);
+        return false;
+      })
+      .catch(function (err) {
+        if (tries < 3) {
+          setTimeout(function () { applyCreds(email, username, password, manual, tries + 1); }, RETRY_MS[tries] || 2000);
+          return false;
+        }
+        state.saving = false;
+        if (manual) toast("اعمال نشد: " + ((err && err.message) || err), false);
+        return false;
+      });
+  }
+
+  // The dashboard and the VPN layer can write the client map at the same time;
+  // a stale write would silently restore the previous pair. Re-read once and
+  // re-apply when the server does not show what we just saved.
+  function verifyApplied(email, username, password, attempt) {
+    var tries = typeof attempt === "number" ? attempt : 0;
+    if (tries > 2) return Promise.resolve(false);
+    return loadProfiles(true).then(function (accs) {
+      var hit = null;
+      for (var i = 0; i < accs.length; i += 1) {
+        if ((accs[i].email || "").toLowerCase() === String(email || "").toLowerCase()) { hit = accs[i]; break; }
+      }
+      if (!hit) return false;
+      if (hit.username === username && hit.password === password) return true;
+      return applyCreds(email, username, password, false, 0).then(function (ok) {
+        if (!ok) return false;
+        return new Promise(function (resolve) {
+          setTimeout(function () { resolve(verifyApplied(email, username, password, tries + 1)); }, 1500);
+        });
+      });
+    }).catch(function () { return false; });
+  }
+
+  function commitPending(email) {
+    if (state.groupOn === false) return Promise.resolve(false);
+    var pend = state.pending;
+    if (!pend || state.committing) return Promise.resolve(false);
+    state.committing = true;
+    if (state.commitTimer) { clearTimeout(state.commitTimer); state.commitTimer = null; }
+    var target = email || pend.email || state.email || currentUsernameGuess();
+    if (!target) return Promise.resolve(false);
+    return applyCreds(target, pend.username, pend.password, false, 0).then(function (ok) {
+      state.committing = false;
+      return ok;
+    });
+  }
+
+  function currentUsernameGuess() {
+    var d = findDialog();
+    if (!d) return "";
+    var inputs = d.querySelectorAll("input");
+    for (var i = 0; i < inputs.length; i += 1) {
+      var inp = inputs[i];
+      if (inp.getAttribute("data-kb-ovpn")) continue;
+      var v = (inp.value || "").trim();
+      if (!v || v.length < 3) continue;
+      if (state.profiles) {
+        for (var j = 0; j < state.profiles.length; j += 1) {
+          if ((state.profiles[j].email || "").toLowerCase() === v.toLowerCase()) return state.profiles[j].email;
+        }
+      }
+      if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) return v;
+    }
+    return "";
+  }
+
+  function loadProfiles(force) {
+    var fresh = state.profiles && (Date.now() - state.profilesAt < 20000);
+    if (fresh && !force) return Promise.resolve(state.profiles);
+    return fetch(PROFILES_API + (force ? "?refresh=1" : ""), { credentials: "same-origin", headers: authHeaders() })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        var accs = (res && res.obj && res.obj.accounts) || [];
+        state.profiles = accs; state.profilesAt = Date.now();
+        return accs;
+      })
+      .catch(function () { return state.profiles || []; });
+  }
+
+  function dialogInputValues() {
+    var d = findDialog();
+    if (!d) return [];
+    var out = [];
+    var inputs = d.querySelectorAll("input,textarea");
+    for (var i = 0; i < inputs.length; i += 1) {
+      if (inputs[i].getAttribute("data-kb-ovpn")) continue;
+      var v = (inputs[i].value || "").trim();
+      if (v) out.push(v);
+    }
+    return out;
+  }
+
+  // Which account is this dialog editing? Match the dialog's own fields against
+  // the OpenVPN account list (usernames are not necessarily emails).
+  function resolveEmail(attempt) {
+    var vals = dialogInputValues();
+    return loadProfiles(!state.profiles || (attempt || 0) === 0).then(function (accs) {
+      var i, j, k;
+      for (i = 0; i < accs.length; i += 1) {
+        var email = accs[i].email || "";
+        if (!email) continue;
+        for (j = 0; j < vals.length; j += 1) {
+          if (vals[j].toLowerCase() === email.toLowerCase()) return email;
+        }
+      }
+      var d = findDialog();
+      var text = (d && d.textContent) || "";
+      for (k = 0; k < accs.length; k += 1) {
+        if (accs[k].email && text.indexOf(accs[k].email) >= 0) return accs[k].email;
+      }
+      if ((attempt || 0) < 2) {
+        return new Promise(function (resolve) {
+          setTimeout(function () { resolve(resolveEmail((attempt || 0) + 1)); }, 700);
+        });
+      }
+      return "";
+    });
+  }
+
+  // Edit mode: show exactly what the account uses right now (fresh from server).
+  function prefillLive(email) {
+    if (!email) return Promise.resolve();
+    state.email = email;
+    return loadProfiles(false).then(function (accs) {
+      var box = document.querySelector("[data-kb-ovpn-box]");
+      if (!box) return;
+      var hit = null;
+      for (var i = 0; i < accs.length; i += 1) {
+        if ((accs[i].email || "").toLowerCase() === email.toLowerCase()) { hit = accs[i]; break; }
+      }
+      if (!hit) return;
+      // Never clobber something the admin already typed in this dialog.
+      if (state.pending) return;
+      if (box.__kb.username.value || box.__kb.password.value) return;
+      fill(box, hit.username, hit.password);
+      state.fields.username = hit.username || "";
+      state.fields.password = hit.password || "";
+    });
+  }
+
+  function resetDialogState(mode) {
+    state.mode = mode;
+    state.fields = { username: "", password: "" };
+    state.pending = null;
+    state.email = "";
+    state.resolving = false;
+    state.openAt = Date.now();
+  }
+
+  function attach() {
+    var dialog = findDialog();
+    if (!dialog) {
+      if (state.dialogOpen) {
+        state.dialogOpen = false;
+        state.closedAt = Date.now();
+        setTimeout(function () {
+          if (!state.dialogOpen && Date.now() - state.closedAt >= 3000) {
+            state.fields = { username: "", password: "" };
+            state.pending = null;
+            state.email = "";
+            state.mode = "";
+          }
+        }, 4000);
+      }
+      return;
+    }
+    if (!state.dialogOpen) {
+      state.dialogOpen = true;
+      state.closedAt = 0;
+      resetDialogState("");
+    }
+    var mode = dialogMode(dialog);
+    if (mode && mode !== state.mode) {
+      var keepFields = state.fields.username || state.fields.password;
+      state.mode = mode;
+      if (mode === "edit" && !keepFields) {
+        state.fields = { username: "", password: "" };
+        state.pending = null;
+      }
+    }
+
+    var host = scrollHost(dialog);
+    if (!host) return;
+    var box = dialog.querySelector("[data-kb-ovpn-box]");
+    if (box && box.parentElement !== host) { try { host.appendChild(box); } catch (e) {} }
+    if (box && host.lastElementChild !== box && host === box.parentElement) { try { host.appendChild(box); } catch (e) {} }
+    box = dialog.querySelector("[data-kb-ovpn-box]");
+
+    if (!box) {
+      box = build();
+      if (host === dialog) {
+        var footer = null;
+        var btns = dialog.querySelectorAll("button");
+        for (var i = 0; i < btns.length; i += 1) {
+          var label = (btns[i].textContent || "").trim().toLowerCase();
+          if (label === "cancel" || label === "create" || label === "save" || label === "update"
+            || label === "لغو" || label === "ایجاد" || label === "ذخیره" || label === "ویرایش") {
+            footer = btns[i].parentElement;
+            break;
+          }
+        }
+        if (footer && footer.parentElement) footer.parentElement.insertBefore(box, footer);
+        else host.appendChild(box);
+      } else {
+        host.appendChild(box);
+      }
+    }
+
+    // The box only belongs to OpenVPN members: hidden while the group is not
+    // ticked, back (with the same values) as soon as it is ticked again.
+    var groupOn = openVpnGroupSelected(dialog);
+    state.groupOn = (groupOn === null ? true : groupOn);
+    try { box.style.display = state.groupOn ? "" : "none"; } catch (e) {}
+    if (!state.groupOn && state.pending) unstage(box);
+
+    // Unknown mode (title not matched yet): decide from the presence of a user.
+    if (!state.mode && Date.now() - state.openAt > 900) {
+      state.mode = currentUsernameGuess() ? "edit" : "create";
+    }
+    if (state.mode === "edit" && !state.email && !state.resolving) {
+      state.resolving = true;
+      resolveEmail(0).then(function (email) {
+        state.resolving = false;
+        if (!email) return;
+        state.email = email;
+        prefillLive(email);
+      });
+    }
+  }
+
+  // --- hook fetch: the blue submit button is the one that applies values ------
+  var origFetch = window.fetch;
+  if (typeof origFetch === "function" && !window.__kbOvpnFetchHook) {
+    window.__kbOvpnFetchHook = 1;
+    window.fetch = function (input, init) {
+      var url = "", method = "GET";
+      try {
+        if (typeof input === "string") url = input;
+        else if (input && input.url) url = input.url;
+        if (init && init.method) method = init.method;
+        else if (input && input.method) method = input.method;
+      } catch (e) {}
+      try { captureAuth(input, init); } catch (e) {}
+      var promise = origFetch.apply(this, arguments);
+      try {
+        var path = String(url).split("?")[0];
+        var verb = String(method).toUpperCase();
+        var isCreate = /\/api\/user\/?$/.test(path) && verb === "POST";
+        var isUpdate = /\/api\/user\/[^/]+\/?$/.test(path) && (verb === "PUT" || verb === "PATCH");
+        if (isCreate) {
+          promise.then(function (res) {
+            try {
+              if (!res || !res.ok) return;
+              res.clone().json().then(function (body) {
+                var created = deepUsername(body, 0) || state.email;
+                if (!created) return;
+                state.email = created;
+                var u = state.fields.username, p = state.fields.password;
+                if (u && p && state.groupOn !== false) applyCreds(created, u, p, false, 0);
+              }).catch(function () {});
+            } catch (e) {}
+          }).catch(function () {});
+        } else if (isUpdate) {
+          promise.then(function (res) {
+            try {
+              if (!res || !res.ok) return;
+              var name = "";
+              try { name = decodeURIComponent(path.split("/").filter(Boolean).pop() || ""); } catch (e) {}
+              // The account being edited wins; the URL is the fallback.
+              var email = state.email || name;
+              if (state.pending) commitPending(email);
+            } catch (e) {}
+          }).catch(function () {});
+        }
+      } catch (e) {}
+      return promise;
+    };
+  }
+
+  // The blue button is the final confirmation: its click commits the staged pair.
+  try {
+    document.addEventListener("click", function (ev) {
+      try {
+        if (!state.pending) return;
+        var d = findDialog();
+        if (!d) return;
+        var btn = primarySubmit(d);
+        if (!btn) return;
+        var t = ev.target;
+        if (!(t === btn || btn.contains(t))) return;
+        scheduleCommit(1200);
+      } catch (e) {}
+      setTimeout(function () { try { attach(); } catch (e) {} }, 180);
+    }, true);
+  } catch (e) {}
+
+  function tick() {
+    try { attach(); } catch (e) {}
+    try { if (state.pending) enableSubmit(); } catch (e) {}
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", tick);
+  else tick();
+  try { new MutationObserver(function () { tick(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+  setInterval(tick, 1200);
+})();
+
+</script>
+</body>
+</html>

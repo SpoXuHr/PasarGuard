@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-NZYk81nU.js";import{t}from"./bulk-flow-PIUY1Duj.js";var n=e();function r(){return(0,n.jsx)(t,{operationType:`groups`})}export{r as default};

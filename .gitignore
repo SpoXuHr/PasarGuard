@@ -1,0 +1,22 @@
+# Never commit runtime databases, credentials or live volume contents.
+.env
+.env.*
+!.env.example
+*.ovpn
+*.pem
+*.key
+*.p12
+*.pfx
+*.sqlite
+*.sqlite3
+*.db
+!native-fresh.db
+**/data/
+**/backups/
+**/pylibs/
+**/node_modules/
+.venv/
+__pycache__/
+*.pyc
+.railway/
+.git-credentials

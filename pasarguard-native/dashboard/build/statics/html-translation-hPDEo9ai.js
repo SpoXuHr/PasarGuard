@@ -1,0 +1,1 @@
+function e(e,t,n={}){return e(t,{...n,interpolation:{...n.interpolation,escapeValue:!0}})}export{e as t};

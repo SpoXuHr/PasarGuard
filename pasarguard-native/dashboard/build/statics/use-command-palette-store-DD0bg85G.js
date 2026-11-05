@@ -1,0 +1,1 @@
+import{t as e}from"./react-BvcU588W.js";var t=e(e=>({open:!1,setOpen:t=>e(e=>({open:typeof t==`function`?t(e.open):t})),createTarget:null,requestCreate:t=>e({createTarget:t,open:!1}),consumeCreate:()=>e({createTarget:null})}));export{t};
