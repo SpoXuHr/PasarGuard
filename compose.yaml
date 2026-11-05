@@ -11,8 +11,8 @@ services:
       PORT: ${VPN_PORT:-20004}
       RAILWAY_ADVERTISED_PORT: ${VPN_PORT:-20004}
       RAILWAY_VOLUME_MOUNT_PATH: /persistent
-      PG_MANAGED_SUB_ORIGIN: https://${SERVER_IP:?Run ./install.sh first}:${VPN_PORT:-20004}
-      PUBLIC_TLS: "1"
+      PG_MANAGED_SUB_ORIGIN: ${SUB_SCHEME:-https}://${SERVER_IP:?Run ./install.sh first}:${VPN_PORT:-20004}
+      PUBLIC_TLS: ${PUBLIC_TLS:-1}
       PYTHONDONTWRITEBYTECODE: "1"
     volumes:
       - pasarguard-data:/persistent

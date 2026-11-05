@@ -11,15 +11,19 @@ Requirements:
 - An externally reachable IPv4 address; allow TCP port 20004 and, for UDP protocols, UDP port 20004 in both the server firewall and hosting-provider firewall. The port must not already be in use. Your provider must allow inbound TCP/UDP; this is not guaranteed on all platforms.
 - This is a **private GitHub repository**. Authenticate your Git client to GitHub before cloning. Do not paste a token into the clone URL, scripts, shell history, or this repository.
 
-After authenticating and cloning:
+After authenticating and cloning, choose **one** access mode:
 
 ```sh
 git clone https://github.com/SpoXuHr/PasarGuard.git
 cd PasarGuard
-sudo ./install.sh
+sudo ./install.sh             # HTTPS (default; certificate is self-signed)
+# OR, if plain HTTP is explicitly needed:
+sudo ./install.sh --http      # http://SERVER_IP:20004/TeamGuccI/
 ```
 
-The installer detects the public IPv4 address, generates a unique random administrator password, stores configuration in a private `.env` file, builds the image, starts Docker Compose, and waits for the native API to respond. It prints the dashboard URL. Username: `GUCCi`. To see the generated password on a root-run installation:
+The HTTP command is an alternative, not an additional step. **HTTP is unencrypted:** passwords, session tokens and subscription links can be intercepted or altered. Do not use it over an untrusted network; use a protected network or a properly secured HTTPS reverse proxy. Enabling HTTPS on an outer proxy alone does not protect an openly exposed HTTP backend.
+
+The installer detects the public IPv4 address, generates a unique random administrator password, stores configuration in a private `.env` file, builds the image, starts Docker Compose, and waits for the native API to respond. It prints the panel and dashboard URLs with the selected scheme. Username: `GUCCi`. To see the generated password on a root-run installation:
 
 ```sh
 sudo grep '^ADMIN_PASSWORD=' .env
@@ -30,14 +34,16 @@ Keep `.env` private. It is ignored by Git and excluded from the Docker build con
 If automatic IP detection is wrong (for example, NAT or differing ingress and egress IPs), or if you want a domain to be used as the advertised address, run **on the first install**, using your own values:
 
 ```sh
-sudo PASARGUARD_HOST=YOUR_PUBLIC_IP_OR_DOMAIN PASARGUARD_PORT=20004 ./install.sh
+sudo PASARGUARD_HOST=YOUR_PUBLIC_IP_OR_DOMAIN PASARGUARD_PORT=20004 ./install.sh --http
 ```
 
-`PASARGUARD_HOST` accepts a hostname or IPv4 address, not a URL. Values are captured when `.env` is first created; existing `.env` is never overwritten. The host must resolve/reach this server. The port must be free. Docker Compose publishes that same port for TCP and UDP. For an existing installation, update the configuration carefully and rebuild/recreate without deleting the volume. Test all links after any network change.
+`PASARGUARD_HOST` accepts a hostname or IPv4 address, not a URL. Host and port are captured when `.env` is first created. The host must resolve/reach this server. The port must be free. Docker Compose publishes that same port for TCP and UDP. For an existing installation, update host/port carefully and rebuild/recreate without deleting the volume. Test all links after any network change.
+
+To change only the access mode on an **existing installation**, use `sudo ./install.sh --http` or `sudo ./install.sh --https`. The container is recreated, causing a brief interruption, but the installer retains the existing administrator password, users, settings and volume. Back up the volume before making changes. Running `sudo ./install.sh` without a mode keeps the existing mode; older installations without a scheme setting default to HTTPS. The installer prints the appropriate URL and the subscription origin follows the selected scheme.
 
 ### TLS and security
 
-The default VPS panel uses a **self-signed certificate**, not a publicly trusted certificate. Browsers and subscription clients will show warnings or reject it. Verify its SHA-256 fingerprint through a trusted administrative channel; accepting an unverified certificate is vulnerable to impersonation. For production, configure a trusted HTTPS reverse proxy using a domain and valid certificate, with access restricted appropriately. Do not assume that a generic HTTPS proxy automatically transports raw OpenVPN or other TCP protocols.
+In HTTPS mode the default VPS panel uses a **self-signed certificate**, not a publicly trusted certificate. Browsers and subscription clients will show warnings or reject it. Verify its SHA-256 fingerprint through a trusted administrative channel; accepting an unverified certificate is vulnerable to impersonation. HTTP mode provides no encryption or server identity verification. For production, configure a trusted HTTPS reverse proxy using a domain and valid certificate, with the direct backend protected by network access controls. Do not assume that a generic HTTPS proxy automatically transports raw OpenVPN or other TCP protocols.
 
 For example, retrieve the certificate fingerprint locally on the server, after startup:
 
